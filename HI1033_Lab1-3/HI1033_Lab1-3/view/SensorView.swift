@@ -10,20 +10,26 @@ import SwiftUI
 struct SensorView: View {
     @EnvironmentObject var theViewModel : SensorViewModel
     var body: some View {
-        Button {
-            theViewModel.ButtonClicked()
-            print("Submit")
-            
-        }label: {
-            Text("Submit")
-                .padding(7)
+        VStack {
+            Button {
+                theViewModel.ButtonClicked()
+                print("Submit")
+                
+            }label: {
+                Text("Submit")
+                    .padding(7)
+            }
+            List {
+                ForEach(theViewModel.devices, id: \.self) { device in
+                    Text(device.name ?? "")
+                }
+            }
         }
-        
     }
 }
 
 struct SensorView_Previews: PreviewProvider {
     static var previews: some View {
-        SensorView()
+        SensorView().environmentObject(SensorViewModel())
     }
 }

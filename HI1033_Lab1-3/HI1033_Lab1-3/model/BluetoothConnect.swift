@@ -53,7 +53,8 @@ class BluetoothConnect: NSObject, CBCentralManagerDelegate, CBPeripheralDelegate
             centralManager.connect(peripheralBLE)
             central.stopScan()
             */
-            if bluetoothDevices.contains(peripheral) {
+            if !bluetoothDevices.contains(peripheral) {
+                print(peripheral.name)
                 bluetoothDevices.append(peripheral)
                 delegate?.bluetoothConnectDidDiscoverPeripheral(peripheral)
             }
