@@ -8,9 +8,15 @@
 import Foundation
 import CoreBluetooth
 
+protocol BluetoothConnectDelegate: AnyObject {
+    func bluetoothConnectDidDiscoverPeripheral(_ peripheral: CBPeripheral)
+}
+
 class BluetoothConnect: NSObject, CBCentralManagerDelegate, CBPeripheralDelegate {
+    weak var delegate: BluetoothConnectDelegate?
     var centralManager: CBCentralManager!
     var peripheralBLE: CBPeripheral!
+    var bluetoothDevices : [CBPeripheral] = []
     
     let GATTService = CBUUID(string: "fb005c80-02e7-f387-1cad-8acd2d8df0c8")
     let GATTCommand = CBUUID(string: "fb005c81-02e7-f387-1cad-8acd2d8df0c8")
@@ -40,14 +46,31 @@ class BluetoothConnect: NSObject, CBCentralManagerDelegate, CBPeripheralDelegate
         print("didDiscover")
         
         if let name = peripheral.name, name.contains("Polar"){
+            /*
             print("Found Polar")
             peripheralBLE = peripheral
             peripheralBLE.delegate = self
             centralManager.connect(peripheralBLE)
             central.stopScan()
-            
-    
+            */
+            if bluetoothDevices.contains(peripheral) {
+                bluetoothDevices.append(peripheral)
+                delegate?.bluetoothConnectDidDiscoverPeripheral(peripheral)
+            }
         }
+    }
+    
+    func getBlueToothDevices() -> [CBPeripheral] {
+        return bluetoothDevices
+    }
+    
+    func choosePeriferal(_ peripheral: CBPeripheral){
+        print("Found Polar")
+        peripheralBLE = peripheral
+        peripheralBLE.delegate = self
+        centralManager.connect(peripheralBLE)
+        centralManager.stopScan()
+        bluetoothDevices = []
     }
     
     func centralManager(_ central: CBCentralManager, didConnect peripheral: CBPeripheral) {

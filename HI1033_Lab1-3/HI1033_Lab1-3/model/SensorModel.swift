@@ -6,8 +6,16 @@
 //
 
 import Foundation
+import CoreBluetooth
 
 
 struct SensorModel {
+    private (set ) var bluetoothDevices : [CBPeripheral] = []
     
+    
+    
+    
+    mutating func bluetoothConnectDidDiscoverPeripheral(_ peripheral: CBPeripheral) {
+        bluetoothDevices.append(peripheral)
+    }
 }
