@@ -12,14 +12,22 @@ struct SensorView: View {
     var body: some View {
         NavigationStack{
             
-            VStack {
+            HStack {
                 NavigationLink(destination: BluetoothDevicesView()
                     .onAppear{
-                        theViewModel.ButtonClicked()
+                        
+                        theViewModel.bluetoothButtonClicked()
                     }){
 
-                            Text("Submit")
-                                .padding(7)
+                            Text("Bluetooth")
+                }
+                
+                NavigationLink(destination: InternalSensorView()
+                    .onAppear{
+                        theViewModel.internalButtonClicked()
+                    }){
+
+                            Text("Internal")
                 }
             }
         }

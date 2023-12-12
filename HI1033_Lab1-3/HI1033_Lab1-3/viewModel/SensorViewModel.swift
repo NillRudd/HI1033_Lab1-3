@@ -20,14 +20,26 @@ class SensorViewModel: ObservableObject, BluetoothConnectDelegate {
         theModel.chosenBluetoothDevice
     }
     
+    var mode : SensorMode{
+        theModel.mode
+    }
+    
     init() {
         theModel = SensorModel()
         BLEConnect.delegate = self
     }
     
-    func ButtonClicked() {
+    func bluetoothButtonClicked() {
+        theModel.setMode(SensorMode.BLUETOOTH)
         BLEConnect.start()
         devices = []
+    }
+    
+    
+    func internalButtonClicked() {
+        // code to start the internal sensor
+        theModel.setMode(SensorMode.INTERNAL)
+        
     }
     
     func periferalChoosen(_ pheriferal : CBPeripheral){

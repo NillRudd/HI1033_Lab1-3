@@ -8,6 +8,7 @@
 
 /* Begin PBXBuildFile section */
 		5BC166B02B2856F60038658E /* BluetoothDevicesView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 5BC166AF2B2856F60038658E /* BluetoothDevicesView.swift */; };
+		5BC166B22B2863CA0038658E /* InternalSensorView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 5BC166B12B2863CA0038658E /* InternalSensorView.swift */; };
 		85060C792B26F61F00B544AB /* HI1033_Lab1_3App.swift in Sources */ = {isa = PBXBuildFile; fileRef = 85060C782B26F61F00B544AB /* HI1033_Lab1_3App.swift */; };
 		85060C7B2B26F61F00B544AB /* ContentView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 85060C7A2B26F61F00B544AB /* ContentView.swift */; };
 		85060C7D2B26F62100B544AB /* Assets.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = 85060C7C2B26F62100B544AB /* Assets.xcassets */; };
@@ -22,6 +23,7 @@
 
 /* Begin PBXFileReference section */
 		5BC166AF2B2856F60038658E /* BluetoothDevicesView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = BluetoothDevicesView.swift; sourceTree = "<group>"; };
+		5BC166B12B2863CA0038658E /* InternalSensorView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = InternalSensorView.swift; sourceTree = "<group>"; };
 		85060C752B26F61F00B544AB /* HI1033_Lab1-3.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = "HI1033_Lab1-3.app"; sourceTree = BUILT_PRODUCTS_DIR; };
 		85060C782B26F61F00B544AB /* HI1033_Lab1_3App.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = HI1033_Lab1_3App.swift; sourceTree = "<group>"; };
 		85060C7A2B26F61F00B544AB /* ContentView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ContentView.swift; sourceTree = "<group>"; };
@@ -102,6 +104,7 @@
 				85060C7A2B26F61F00B544AB /* ContentView.swift */,
 				85060C8D2B26FB9700B544AB /* SensorView.swift */,
 				5BC166AF2B2856F60038658E /* BluetoothDevicesView.swift */,
+				5BC166B12B2863CA0038658E /* InternalSensorView.swift */,
 			);
 			path = view;
 			sourceTree = "<group>";
@@ -191,6 +194,7 @@
 				85060C7B2B26F61F00B544AB /* ContentView.swift in Sources */,
 				85060C902B26FBA900B544AB /* SensorViewModel.swift in Sources */,
 				85060C792B26F61F00B544AB /* HI1033_Lab1_3App.swift in Sources */,
+				5BC166B22B2863CA0038658E /* InternalSensorView.swift in Sources */,
 				85060C852B26F62100B544AB /* HI1033_Lab1_3.xcdatamodeld in Sources */,
 				85060C952B26FC2200B544AB /* SensorModel.swift in Sources */,
 			);
