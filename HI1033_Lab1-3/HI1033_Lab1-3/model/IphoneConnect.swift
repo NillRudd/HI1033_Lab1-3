@@ -35,6 +35,7 @@ class IphoneConnect {
         }
     }
 
+    
     func stop() {
         manager.stopAccelerometerUpdates()
     }
