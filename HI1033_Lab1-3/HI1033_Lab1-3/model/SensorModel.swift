@@ -6,13 +6,19 @@
 //
 
 import Foundation
+import CoreBluetooth
 
 
 struct SensorModel {
-    
+    private (set) var chosenBluetoothDevice : CBPeripheral?
     
     
     init() {
         
+    }
+    
+    
+    mutating func setChosenDevice(_ pheriferal : CBPeripheral){
+        chosenBluetoothDevice = pheriferal
     }
 }
