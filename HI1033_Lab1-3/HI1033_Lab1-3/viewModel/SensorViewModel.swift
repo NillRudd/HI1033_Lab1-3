@@ -8,21 +8,28 @@
 import Foundation
 import CoreBluetooth
 
-class SensorViewModel: ObservableObject {
+class SensorViewModel: ObservableObject, BluetoothConnectDelegate {
     
     @Published private var theModel: SensorModel
-    
-    var devices : [CBPeripheral] {
-        theModel.BLEConnect.getBlueToothDevices()
-    }
-    
+    private let BLEConnect = BluetoothConnect()
+    @Published var devices: [CBPeripheral] = []
     
     init() {
         theModel = SensorModel()
+        BLEConnect.delegate = self
     }
     
     func ButtonClicked() {
-        theModel.buttonPressed()
+        BLEConnect.start()
+        devices = []
     }
     
+    func periferalChoosen(){
+        //BLEConnect.choosePeriferal()
+    }
+    
+    func bluetoothConnectDidDiscoverPeripheral(_ peripheral: CBPeripheral) {
+        devices.append(peripheral)
+        print("successfull call")
+    }
 }

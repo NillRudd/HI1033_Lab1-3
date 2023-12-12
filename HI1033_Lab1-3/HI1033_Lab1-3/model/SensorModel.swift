@@ -6,24 +6,13 @@
 //
 
 import Foundation
-import CoreBluetooth
 
 
 struct SensorModel {
     
-    let BLEConnect = BluetoothConnect()
+    
     
     init() {
         
     }
-    
-    mutating func buttonPressed() {
-        BLEConnect.start()
-        //bluetoothDevices = BLEConnect.getBlueToothDevices()
-    }
-    /*
-    mutating func bluetoothConnectDidDiscoverPeripheral(_ peripheral: CBPeripheral) {
-        bluetoothDevices.append(peripheral)
-    }
-     */
 }
