@@ -12,6 +12,9 @@ import CoreBluetooth
 struct SensorModel {
     private (set) var chosenBluetoothDevice : CBPeripheral?
     private (set) var mode : SensorMode = SensorMode.INTERNAL
+    private (set) var bluetoothFilteredDataArray : [FilteredData] = []
+    private (set) var alpha : Double = 1.5
+
     
     
     init() {
@@ -27,8 +30,27 @@ struct SensorModel {
         self.mode = mode
     }
     
+    mutating func addBluetoothData(_ sensorData: FilteredData){
+        bluetoothFilteredDataArray.append(sensorData)
+    }
+    
+    
 }
 
+struct FilteredData {
+    var x: Double
+    var y: Double
+    var z: Double
+    
+    init(x: Double, y: Double, z: Double) {
+        self.x = x
+        self.y = y
+        self.z = z
+    }
+    
+    
+    
+}
 
 
 enum SensorMode {
