@@ -9,20 +9,22 @@ import Foundation
 import CoreBluetooth
 
 class SensorViewModel: ObservableObject {
+    @Published var bluetoothConnect: BluetoothConnect
     
     @Published private var theModel: SensorModel
     
     var devices : [CBPeripheral] {
-        theModel.BLEConnect.getBlueToothDevices()
+        bluetoothConnect.bluetoothDevices
     }
     
     
     init() {
         theModel = SensorModel()
+        bluetoothConnect = BluetoothConnect()
     }
     
     func ButtonClicked() {
-        theModel.buttonPressed()
+        bluetoothConnect.start()
     }
     
 }
