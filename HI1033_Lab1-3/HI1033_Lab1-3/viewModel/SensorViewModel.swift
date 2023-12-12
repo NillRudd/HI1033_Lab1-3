@@ -22,6 +22,10 @@ class SensorViewModel: ObservableObject, BluetoothConnectDelegate, InternalConne
         theModel.bluetoothFilteredDataArray
     }
     
+    var recordedData : [Measurement]{
+        theModel.recordedData
+    }
+    
     var chosenBluetoothDevice : CBPeripheral?{
         theModel.chosenBluetoothDevice
     }
@@ -89,14 +93,21 @@ class SensorViewModel: ObservableObject, BluetoothConnectDelegate, InternalConne
     func returnGyroData(_ x: Double,_ y: Double,_ z:Double) {
 
     }
-
+    
     func retriveSensorData(xSample: Int16, ySample: Int16, zSample: Int16){
+            let filteredData: FilteredData = filterDataA1(xSample: xSample, ySample: ySample, zSample: zSample)
+            let elevationAngleDegrees = calculateAngle(filteredData)
+            print("Elevation angles degrees: \(elevationAngleDegrees)")
+            theModel.addMeassurement(angle: elevationAngleDegrees, timestamp: Date.now)
+    }
+    
+    func filterDataA1(xSample: Int16, ySample: Int16, zSample: Int16) -> FilteredData{
         var filteredData : FilteredData = FilteredData(x: 0, y: 0, z: 0)
 
         if theModel.bluetoothFilteredDataArray.count>1{
-            filteredData.x = filterData(currentInput: Double(xSample), previousOutput: theModel.bluetoothFilteredDataArray.last!.x)
-            filteredData.y = filterData(currentInput: Double(ySample), previousOutput: theModel.bluetoothFilteredDataArray.last!.y)
-            filteredData.z = filterData(currentInput: Double(zSample), previousOutput: theModel.bluetoothFilteredDataArray.last!.z)
+            filteredData.x = filterEach(currentInput: Double(xSample), previousOutput: theModel.bluetoothFilteredDataArray.last!.x)
+            filteredData.y = filterEach(currentInput: Double(ySample), previousOutput: theModel.bluetoothFilteredDataArray.last!.y)
+            filteredData.z = filterEach(currentInput: Double(zSample), previousOutput: theModel.bluetoothFilteredDataArray.last!.z)
             
             //theModel.alpha*Double(xSample) + (1 - theModel.alpha) * theModel.bluetoothDataArray.last
             
@@ -105,20 +116,27 @@ class SensorViewModel: ObservableObject, BluetoothConnectDelegate, InternalConne
             filteredData.y = Double(ySample)
             filteredData.z = Double(zSample)
         }
-        
+        //print("previous: \(String(describing: theModel.bluetoothFilteredDataArray.last))")
+        //print("DATA: \( filteredData)")
+        theModel.addBluetoothData(filteredData)
+        return filteredData
+
+    }
+
+
+    func calculateAngle(_ filteredData: FilteredData) -> Double{
         let magnitude = sqrt(filteredData.x * filteredData.x + filteredData.y * filteredData.y + filteredData.z * filteredData.z)
         let cosElevationAngle = filteredData.z / magnitude
-             let elevationAngleRadians = acos(cosElevationAngle)
-             let elevationAngleDegrees = elevationAngleRadians * (180.0 / .pi)
-            print("Elevation angles degrees: \(elevationAngleDegrees)")
+        let elevationAngleRadians = acos(cosElevationAngle)
+        let elevationAngleDegrees = elevationAngleRadians * (180.0 / .pi)
+        return elevationAngleDegrees
         
         
-            theModel.addBluetoothData(filteredData)
-    
     }
+        
     
     
-    func filterData(currentInput: Double, previousOutput: Double) -> Double{
+    func filterEach(currentInput: Double, previousOutput: Double) -> Double{
         return (theModel.alpha * currentInput) + (1 - theModel.alpha) * previousOutput
     }
 }

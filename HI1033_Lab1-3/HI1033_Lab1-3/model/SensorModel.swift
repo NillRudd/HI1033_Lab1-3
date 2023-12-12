@@ -14,6 +14,8 @@ struct SensorModel {
     private (set) var mode : SensorMode = SensorMode.INTERNAL
     private (set) var bluetoothFilteredDataArray : [FilteredData] = []
     private (set) var alpha : Double = 1.5
+    private (set) var recordedData : [Measurement] = []
+
 
     
     
@@ -34,7 +36,19 @@ struct SensorModel {
         bluetoothFilteredDataArray.append(sensorData)
     }
     
-    
+    mutating func addMeassurement(angle: Double, timestamp: Date){
+        recordedData.append(Measurement(angle: angle, timestamp: timestamp))
+    }
+}
+
+struct Measurement {
+    var angle: Double
+    var timestamp: Date
+            
+    init(angle: Double, timestamp: Date){
+        self.angle = angle
+        self.timestamp = timestamp
+    }
 }
 
 struct FilteredData {
