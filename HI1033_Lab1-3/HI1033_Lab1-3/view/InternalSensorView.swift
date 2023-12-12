@@ -13,6 +13,8 @@ struct InternalSensorView: View {
     }
 }
 
+/*
 #Preview {
     InternalSensorView()
 }
+*/

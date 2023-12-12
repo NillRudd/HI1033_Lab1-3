@@ -19,6 +19,8 @@
 		85060C8E2B26FB9700B544AB /* SensorView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 85060C8D2B26FB9700B544AB /* SensorView.swift */; };
 		85060C902B26FBA900B544AB /* SensorViewModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = 85060C8F2B26FBA900B544AB /* SensorViewModel.swift */; };
 		85060C952B26FC2200B544AB /* SensorModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = 85060C942B26FC2200B544AB /* SensorModel.swift */; };
+		85F81CCA2B286C2C0074EAFB /* IphoneConnect.swift in Sources */ = {isa = PBXBuildFile; fileRef = 85F81CC92B286C2C0074EAFB /* IphoneConnect.swift */; };
+		85F81CCC2B286C5F0074EAFB /* SensorDataProcessor.swift in Sources */ = {isa = PBXBuildFile; fileRef = 85F81CCB2B286C5F0074EAFB /* SensorDataProcessor.swift */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXFileReference section */
@@ -36,6 +38,8 @@
 		85060C8F2B26FBA900B544AB /* SensorViewModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SensorViewModel.swift; sourceTree = "<group>"; };
 		85060C942B26FC2200B544AB /* SensorModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SensorModel.swift; sourceTree = "<group>"; };
 		85060C962B27033800B544AB /* Sensor.entitlements */ = {isa = PBXFileReference; lastKnownFileType = text.plist.entitlements; path = Sensor.entitlements; sourceTree = "<group>"; };
+		85F81CC92B286C2C0074EAFB /* IphoneConnect.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = IphoneConnect.swift; sourceTree = "<group>"; };
+		85F81CCB2B286C5F0074EAFB /* SensorDataProcessor.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SensorDataProcessor.swift; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
@@ -94,6 +98,8 @@
 				85060C812B26F62100B544AB /* Persistence.swift */,
 				85060C8B2B26FAA800B544AB /* BluetoothConnect.swift */,
 				85060C942B26FC2200B544AB /* SensorModel.swift */,
+				85F81CC92B286C2C0074EAFB /* IphoneConnect.swift */,
+				85F81CCB2B286C5F0074EAFB /* SensorDataProcessor.swift */,
 			);
 			path = model;
 			sourceTree = "<group>";
@@ -187,7 +193,9 @@
 			isa = PBXSourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+				85F81CCC2B286C5F0074EAFB /* SensorDataProcessor.swift in Sources */,
 				85060C822B26F62100B544AB /* Persistence.swift in Sources */,
+				85F81CCA2B286C2C0074EAFB /* IphoneConnect.swift in Sources */,
 				85060C8C2B26FAA800B544AB /* BluetoothConnect.swift in Sources */,
 				5BC166B02B2856F60038658E /* BluetoothDevicesView.swift in Sources */,
 				85060C8E2B26FB9700B544AB /* SensorView.swift in Sources */,
@@ -342,7 +350,7 @@
 					"@executable_path/Frameworks",
 				);
 				MARKETING_VERSION = 1.0;
-				PRODUCT_BUNDLE_IDENTIFIER = NillRudd;
+				PRODUCT_BUNDLE_IDENTIFIER = "NillRudd.HI1033-Lab1-3";
 				PRODUCT_NAME = "$(TARGET_NAME)";
 				SWIFT_EMIT_LOC_STRINGS = YES;
 				SWIFT_VERSION = 5.0;
@@ -375,7 +383,7 @@
 					"@executable_path/Frameworks",
 				);
 				MARKETING_VERSION = 1.0;
-				PRODUCT_BUNDLE_IDENTIFIER = NillRudd;
+				PRODUCT_BUNDLE_IDENTIFIER = "NillRudd.HI1033-Lab1-3";
 				PRODUCT_NAME = "$(TARGET_NAME)";
 				SWIFT_EMIT_LOC_STRINGS = YES;
 				SWIFT_VERSION = 5.0;
@@ -462,7 +470,7 @@
 					"@executable_path/Frameworks",
 				);
 				MARKETING_VERSION = 1.0;
-				PRODUCT_BUNDLE_IDENTIFIER = NillRudd;
+				PRODUCT_BUNDLE_IDENTIFIER = "NillRudd.HI1033-Lab1-3";
 				PRODUCT_NAME = "$(TARGET_NAME)";
 				SWIFT_EMIT_LOC_STRINGS = YES;
 				SWIFT_VERSION = 5.0;

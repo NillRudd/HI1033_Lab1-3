@@ -19,6 +19,7 @@ class SensorViewModel: ObservableObject, BluetoothConnectDelegate {
     @Published var devices: [CBPeripheral] = []
     private var timer: Timer?
     
+    
     var chosenBluetoothDevice : CBPeripheral?{
         theModel.chosenBluetoothDevice
     }
@@ -26,7 +27,7 @@ class SensorViewModel: ObservableObject, BluetoothConnectDelegate {
     var mode : SensorMode{
         theModel.mode
     }
-
+    
     
     init() {
         theModel = SensorModel()
@@ -40,9 +41,9 @@ class SensorViewModel: ObservableObject, BluetoothConnectDelegate {
         devices = []
     }
     
-    func periferalChoosen(){
-        //BLEConnect.choosePeriferal()
-        timer10BLuetooth()
+    func periferalChoosen(_ pheriferal : CBPeripheral){
+        BLEConnect.choosePeriferal(pheriferal)
+        theModel.setChosenDevice(pheriferal)
     }
     
     func timer10BLuetooth(){
@@ -65,6 +66,7 @@ class SensorViewModel: ObservableObject, BluetoothConnectDelegate {
     func cancelTimerIphone(){
         self.timer?.invalidate()
         self.IPHConnect.stop()
+    }
     
     func internalButtonClicked() {
         // code to start the internal sensor
@@ -73,15 +75,7 @@ class SensorViewModel: ObservableObject, BluetoothConnectDelegate {
         IPHConnect.start()
     }
     
-    func periferalChoosen(_ pheriferal : CBPeripheral){
-        BLEConnect.choosePeriferal(pheriferal)
-        theModel.setChosenDevice(pheriferal)
-    }
-    
     func bluetoothConnectDidDiscoverPeripheral(_ peripheral: CBPeripheral) {
         devices.append(peripheral)
     }
-    
-    
-    
 }
