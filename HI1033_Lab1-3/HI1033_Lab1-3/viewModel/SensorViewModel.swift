@@ -18,6 +18,9 @@ class SensorViewModel: ObservableObject, BluetoothConnectDelegate, InternalConne
     private let IPHConnect = InternalConnect()
     @Published var devices: [CBPeripheral] = []
     private var timer: Timer?
+    var bluetoothDataArray : [FilteredData]{
+        theModel.bluetoothFilteredDataArray
+    }
     
     var chosenBluetoothDevice : CBPeripheral?{
         theModel.chosenBluetoothDevice
@@ -85,5 +88,37 @@ class SensorViewModel: ObservableObject, BluetoothConnectDelegate, InternalConne
     
     func returnGyroData(_ x: Double,_ y: Double,_ z:Double) {
 
+    }
+
+    func retriveSensorData(xSample: Int16, ySample: Int16, zSample: Int16){
+        var filteredData : FilteredData = FilteredData(x: 0, y: 0, z: 0)
+
+        if theModel.bluetoothFilteredDataArray.count>1{
+            filteredData.x = filterData(currentInput: Double(xSample), previousOutput: theModel.bluetoothFilteredDataArray.last!.x)
+            filteredData.y = filterData(currentInput: Double(ySample), previousOutput: theModel.bluetoothFilteredDataArray.last!.y)
+            filteredData.z = filterData(currentInput: Double(zSample), previousOutput: theModel.bluetoothFilteredDataArray.last!.z)
+            
+            //theModel.alpha*Double(xSample) + (1 - theModel.alpha) * theModel.bluetoothDataArray.last
+            
+        } else{
+            filteredData.x = Double(xSample)
+            filteredData.y = Double(ySample)
+            filteredData.z = Double(zSample)
+        }
+        
+        let magnitude = sqrt(filteredData.x * filteredData.x + filteredData.y * filteredData.y + filteredData.z * filteredData.z)
+        let cosElevationAngle = filteredData.z / magnitude
+             let elevationAngleRadians = acos(cosElevationAngle)
+             let elevationAngleDegrees = elevationAngleRadians * (180.0 / .pi)
+            print("Elevation angles degrees: \(elevationAngleDegrees)")
+        
+        
+            theModel.addBluetoothData(filteredData)
+    
+    }
+    
+    
+    func filterData(currentInput: Double, previousOutput: Double) -> Double{
+        return (theModel.alpha * currentInput) + (1 - theModel.alpha) * previousOutput
     }
 }

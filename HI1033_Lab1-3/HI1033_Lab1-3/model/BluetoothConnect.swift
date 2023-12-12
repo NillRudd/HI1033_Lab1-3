@@ -10,6 +10,7 @@ import CoreBluetooth
 
 protocol BluetoothConnectDelegate: AnyObject {
     func bluetoothConnectDidDiscoverPeripheral(_ peripheral: CBPeripheral)
+    func retriveSensorData(xSample: Int16, ySample: Int16, zSample: Int16)
 }
 
 class BluetoothConnect: NSObject, CBCentralManagerDelegate, CBPeripheralDelegate {
@@ -182,8 +183,7 @@ class BluetoothConnect: NSObject, CBCentralManagerDelegate, CBPeripheralDelegate
             zSample = zSample + delta[2];
             
             print("xDelta:\(xSample) yDelta:\(ySample) zDelta:\(zSample)")
-    
-            
+            delegate?.retriveSensorData(xSample: xSample, ySample: ySample, zSample: zSample)
         }
         
         
