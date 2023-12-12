@@ -11,14 +11,13 @@
 import Foundation
 import CoreBluetooth
 
-class SensorViewModel: ObservableObject, BluetoothConnectDelegate {
+class SensorViewModel: ObservableObject, BluetoothConnectDelegate, InternalConnectDelegate {
     
     @Published private var theModel: SensorModel
     private let BLEConnect = BluetoothConnect()
-    private let IPHConnect = IphoneConnect()
+    private let IPHConnect = InternalConnect()
     @Published var devices: [CBPeripheral] = []
     private var timer: Timer?
-    
     
     var chosenBluetoothDevice : CBPeripheral?{
         theModel.chosenBluetoothDevice
@@ -27,7 +26,6 @@ class SensorViewModel: ObservableObject, BluetoothConnectDelegate {
     var mode : SensorMode{
         theModel.mode
     }
-    
     
     init() {
         theModel = SensorModel()
@@ -44,6 +42,7 @@ class SensorViewModel: ObservableObject, BluetoothConnectDelegate {
     func periferalChoosen(_ pheriferal : CBPeripheral){
         BLEConnect.choosePeriferal(pheriferal)
         theModel.setChosenDevice(pheriferal)
+        timer10BLuetooth()
     }
     
     func timer10BLuetooth(){
@@ -57,13 +56,13 @@ class SensorViewModel: ObservableObject, BluetoothConnectDelegate {
         self.BLEConnect.stop()
     }
     
-    func timer10Iphone(){
+    func timer10Internal(){
         timer = Timer.scheduledTimer(withTimeInterval: 10, repeats: false) { [weak self] _ in
-            self?.cancelTimerIphone()
+            self?.cancelTimerInternal()
         }
     }
     
-    func cancelTimerIphone(){
+    func cancelTimerInternal(){
         self.timer?.invalidate()
         self.IPHConnect.stop()
     }
@@ -71,11 +70,20 @@ class SensorViewModel: ObservableObject, BluetoothConnectDelegate {
     func internalButtonClicked() {
         // code to start the internal sensor
         theModel.setMode(SensorMode.INTERNAL)
-        timer10BLuetooth()
-        IPHConnect.start()
+        timer10Internal()
+        //true for both, false for accelerometer maybe change to enum?
+        IPHConnect.start(true)
     }
     
     func bluetoothConnectDidDiscoverPeripheral(_ peripheral: CBPeripheral) {
         devices.append(peripheral)
+    }
+    
+    func returnAccelerometerData(_ x: Double,_ y: Double,_ z:Double) {
+        
+    }
+    
+    func returnGyroData(_ x: Double,_ y: Double,_ z:Double) {
+
     }
 }
