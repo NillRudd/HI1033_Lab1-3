@@ -5,6 +5,9 @@
 //  Created by Niklas Roslund on 2023-12-11.
 //
 
+
+//Polar Sense B36BE122
+
 import Foundation
 import CoreBluetooth
 
@@ -16,6 +19,14 @@ class SensorViewModel: ObservableObject, BluetoothConnectDelegate {
     @Published var devices: [CBPeripheral] = []
     private var timer: Timer?
     
+    var chosenBluetoothDevice : CBPeripheral?{
+        theModel.chosenBluetoothDevice
+    }
+    
+    var mode : SensorMode{
+        theModel.mode
+    }
+
     
     init() {
         theModel = SensorModel()
@@ -23,7 +34,8 @@ class SensorViewModel: ObservableObject, BluetoothConnectDelegate {
         
     }
     
-    func ButtonClicked() {
+    func bluetoothButtonClicked() {
+        theModel.setMode(SensorMode.BLUETOOTH)
         BLEConnect.start()
         devices = []
     }
@@ -31,11 +43,6 @@ class SensorViewModel: ObservableObject, BluetoothConnectDelegate {
     func periferalChoosen(){
         //BLEConnect.choosePeriferal()
         timer10BLuetooth()
-    }
-    
-    func InternalChoosen() {
-        timer10BLuetooth()
-        IPHConnect.start()
     }
     
     func timer10BLuetooth(){
@@ -58,9 +65,23 @@ class SensorViewModel: ObservableObject, BluetoothConnectDelegate {
     func cancelTimerIphone(){
         self.timer?.invalidate()
         self.IPHConnect.stop()
+    
+    func internalButtonClicked() {
+        // code to start the internal sensor
+        theModel.setMode(SensorMode.INTERNAL)
+        timer10BLuetooth()
+        IPHConnect.start()
+    }
+    
+    func periferalChoosen(_ pheriferal : CBPeripheral){
+        BLEConnect.choosePeriferal(pheriferal)
+        theModel.setChosenDevice(pheriferal)
     }
     
     func bluetoothConnectDidDiscoverPeripheral(_ peripheral: CBPeripheral) {
         devices.append(peripheral)
     }
+    
+    
+    
 }

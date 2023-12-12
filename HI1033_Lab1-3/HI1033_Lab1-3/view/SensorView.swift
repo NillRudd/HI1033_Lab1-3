@@ -10,18 +10,24 @@ import SwiftUI
 struct SensorView: View {
     @EnvironmentObject var theViewModel : SensorViewModel
     var body: some View {
-        VStack {
-            Button {
-                theViewModel.ButtonClicked()
-                print("Submit")
+        NavigationStack{
+            
+            HStack {
+                NavigationLink(destination: BluetoothDevicesView()
+                    .onAppear{
+                        
+                        theViewModel.bluetoothButtonClicked()
+                    }){
+
+                            Text("Bluetooth")
+                }
                 
-            }label: {
-                Text("Submit")
-                    .padding(7)
-            }
-            List {
-                ForEach(theViewModel.devices, id: \.self) { device in
-                    Text(device.name ?? "")
+                NavigationLink(destination: InternalSensorView()
+                    .onAppear{
+                        theViewModel.internalButtonClicked()
+                    }){
+
+                            Text("Internal")
                 }
             }
         }
