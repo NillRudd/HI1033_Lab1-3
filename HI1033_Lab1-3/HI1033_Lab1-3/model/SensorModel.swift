@@ -12,8 +12,10 @@ import CoreBluetooth
 struct SensorModel {
     private (set) var chosenBluetoothDevice : CBPeripheral?
     private (set) var mode : SensorMode = SensorMode.INTERNAL
-    private (set) var bluetoothFilteredDataArray : [FilteredData] = []
-    private (set) var alpha : Double = 1.5
+    private (set) var recordedData : [Measurement] = []
+    private (set) var alpha : Double = 0.5
+    private (set) var previousFilteredData : FilteredData = FilteredData(x: 0, y: 0, z: 0)
+
 
     
     
@@ -30,8 +32,14 @@ struct SensorModel {
         self.mode = mode
     }
     
-    mutating func addBluetoothData(_ sensorData: FilteredData){
-        bluetoothFilteredDataArray.append(sensorData)
+    mutating func addMeassurement(angle: Double, timestamp: Date){
+        recordedData.append(Measurement(angle: angle, timestamp: timestamp))
+    }
+    
+    mutating func setPreviousFilteredData(_ previous : FilteredData){
+        previousFilteredData.x = previous.x
+        previousFilteredData.y = previous.y
+        previousFilteredData.z = previous.z
     }
     
     
@@ -50,6 +58,16 @@ struct FilteredData {
     
     
     
+}
+
+struct Measurement {
+    var angle: Double
+    var timestamp: Date
+            
+    init(angle: Double, timestamp: Date){
+        self.angle = angle
+        self.timestamp = timestamp
+    }
 }
 
 

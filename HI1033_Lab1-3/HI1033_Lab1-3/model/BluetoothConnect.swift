@@ -44,7 +44,7 @@ class BluetoothConnect: NSObject, CBCentralManagerDelegate, CBPeripheralDelegate
     }
     
     func centralManager(_ central: CBCentralManager, didDiscover peripheral: CBPeripheral, advertisementData: [String : Any], rssi RSSI: NSNumber) {
-        print("didDiscover")
+        //print("didDiscover")
         
         if let name = peripheral.name, name.contains("Polar"){
             /*
@@ -162,7 +162,7 @@ class BluetoothConnect: NSObject, CBCentralManagerDelegate, CBPeripheralDelegate
         memcpy(&zSample,zBytes.bytes,2)
         offset += 2
         
-        print("xRef:\(xSample >> 11) yRef:\(ySample >> 11) zRef:\(zSample >> 11)")
+        //print("xRef:\(xSample >> 11) yRef:\(ySample >> 11) zRef:\(zSample >> 11)")
         
         let deltaSize = UInt16(data![offset])
         offset += 1

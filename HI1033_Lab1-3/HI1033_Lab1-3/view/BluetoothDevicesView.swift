@@ -32,6 +32,13 @@ struct BluetoothDevicesView: View {
                 }
             }
             
+            
+            HStack{
+                Text(String(theViewModel.recordedData.last?.angle ?? 0.0))
+                
+                
+            }
+            
         }
     }
 }
