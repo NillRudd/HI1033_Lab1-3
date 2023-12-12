@@ -46,17 +46,18 @@ class BluetoothConnect: NSObject, CBCentralManagerDelegate, CBPeripheralDelegate
         print("didDiscover")
         
         if let name = peripheral.name, name.contains("Polar"){
-            /*
+            
             print("Found Polar")
             peripheralBLE = peripheral
             peripheralBLE.delegate = self
             centralManager.connect(peripheralBLE)
             central.stopScan()
-            */
+            /*
             if !bluetoothDevices.contains(peripheral) {
                 bluetoothDevices.append(peripheral)
                 delegate?.bluetoothConnectDidDiscoverPeripheral(peripheral)
             }
+            */
         }
     }
     
@@ -233,6 +234,15 @@ class BluetoothConnect: NSObject, CBCentralManagerDelegate, CBPeripheralDelegate
         centralManager = CBCentralManager(delegate: self, queue: nil)
     }
     
-    
+    func stop() {
+        /*
+        if(peripheralBLE2 != nil){
+            centralManager.cancelPeripheralConnection(peripheralBLE2)
+        }
+        */
+        if(peripheralBLE != nil){
+            centralManager.cancelPeripheralConnection(peripheralBLE)
+        }
+    }
     
 }
