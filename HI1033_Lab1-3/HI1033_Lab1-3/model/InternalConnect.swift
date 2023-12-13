@@ -18,6 +18,12 @@ class InternalConnect {
     
     weak var delegate: InternalConnectDelegate?
     let manager = CMMotionManager()
+    var accelerometerTimer: Timer?
+    var timer: Timer?
+    
+    init(){
+        
+    }
     
     func start(_ mode : Bool) {
         guard manager.isAccelerometerAvailable else {
@@ -27,13 +33,13 @@ class InternalConnect {
         if mode {
             manager.startAccelerometerUpdates()
             manager.startGyroUpdates()
-            Timer.scheduledTimer(withTimeInterval: 0.1, repeats: true) { [weak self] _ in
+            timer = Timer.scheduledTimer(withTimeInterval: 0.1, repeats: true) { [weak self] _ in
                 self?.captureAccelerometerData()
                 self?.captureGyroData()
             }
         }else {
             manager.startAccelerometerUpdates()
-            Timer.scheduledTimer(withTimeInterval: 0.1, repeats: true) { [weak self] _ in
+            timer = Timer.scheduledTimer(withTimeInterval: 0.1, repeats: true) { [weak self] _ in
                 self?.captureAccelerometerData()
             }
         }
@@ -45,8 +51,10 @@ class InternalConnect {
             let y = data.acceleration.y
             let z = data.acceleration.z
             
-            print("Accelerometer Data: x=\(x), y=\(y), z=\(z)")
+            
             delegate?.returnAccelerometerData(x, y, z)
+            //print("Accelerometer Data: x=\(x), y=\(y), z=\(z)")
+            
         }
     }
     
@@ -64,5 +72,6 @@ class InternalConnect {
     func stop() {
         manager.stopAccelerometerUpdates()
         manager.stopGyroUpdates()
+        timer?.invalidate()
     }
 }

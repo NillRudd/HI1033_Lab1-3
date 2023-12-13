@@ -37,6 +37,7 @@ class SensorViewModel: ObservableObject, BluetoothConnectDelegate, InternalConne
     init() {
         theModel = SensorModel()
         BLEConnect.delegate = self
+        IPHConnect.delegate = self
         
     }
     
@@ -61,6 +62,7 @@ class SensorViewModel: ObservableObject, BluetoothConnectDelegate, InternalConne
     func cancelTimerBlueTooth() {
         self.timer?.invalidate()
         self.BLEConnect.stop()
+        self.theModel.generateCSVFile()
     }
     
     func timer10Internal(){
@@ -72,6 +74,7 @@ class SensorViewModel: ObservableObject, BluetoothConnectDelegate, InternalConne
     func cancelTimerInternal(){
         self.timer?.invalidate()
         self.IPHConnect.stop()
+        self.theModel.generateCSVFile()
     }
     
     func internalButtonClicked() {
@@ -79,7 +82,7 @@ class SensorViewModel: ObservableObject, BluetoothConnectDelegate, InternalConne
         theModel.setMode(SensorMode.INTERNAL)
         timer10Internal()
         //true for both, false for accelerometer maybe change to enum?
-        IPHConnect.start(true)
+        IPHConnect.start(false)
     }
     
     func bluetoothConnectDidDiscoverPeripheral(_ peripheral: CBPeripheral) {
@@ -87,7 +90,10 @@ class SensorViewModel: ObservableObject, BluetoothConnectDelegate, InternalConne
     }
     
     func returnAccelerometerData(_ x: Double,_ y: Double,_ z:Double) {
-        
+        let filteredData: FilteredData = filterDataA1(xSample: Int16(x*1024), ySample: Int16(y*1024), zSample: Int16(z*1024))
+        let elevationAngleDegrees = calculateAngle(filteredData)
+        print("Elevation angles degrees: \(elevationAngleDegrees)")
+        theModel.addMeassurement(angle: elevationAngleDegrees, timestamp: Date.now)
     }
     
     func returnGyroData(_ x: Double,_ y: Double,_ z:Double) {
@@ -133,8 +139,6 @@ class SensorViewModel: ObservableObject, BluetoothConnectDelegate, InternalConne
         
         
     }
-        
-    
     
     func filterEach(currentInput: Double, previousOutput: Double) -> Double{
         return (theModel.alpha * currentInput) + (1 - theModel.alpha) * previousOutput
