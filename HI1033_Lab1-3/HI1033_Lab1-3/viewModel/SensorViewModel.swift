@@ -27,8 +27,12 @@ class SensorViewModel: ObservableObject, BluetoothConnectDelegate, InternalConne
         theModel.filteredDataArrayA2
     }
     
-    var recordedData : [Measurement]{
+    var recordedDataA1 : [Measurement]{
         theModel.recordedDataA1
+    }
+
+    var recordedDataA2 : [Measurement]{
+        theModel.recordedDataA2
     }
     
     var chosenBluetoothDevice : CBPeripheral?{
@@ -61,7 +65,7 @@ class SensorViewModel: ObservableObject, BluetoothConnectDelegate, InternalConne
     func periferalChoosen(_ pheriferal : CBPeripheral){
         BLEConnect.choosePeriferal(pheriferal)
         theModel.setChosenDevice(pheriferal)
-        timer10BLuetooth()
+        //timer10BLuetooth()
     }
     
     func timer10BLuetooth(){
@@ -96,21 +100,45 @@ class SensorViewModel: ObservableObject, BluetoothConnectDelegate, InternalConne
         let filteredData: FilteredData = theModel.filterDataA1(xSample: Int16(x*1024), ySample: Int16(y*1024), zSample: Int16(z*1024))
         let elevationAngleDegrees = theModel.calculateAngle(filteredData)
         print("Elevation angles degrees: \(elevationAngleDegrees)")
-        theModel.addMeassurement(angle: elevationAngleDegrees, timestamp: Date.now)
+        theModel.addMeassurementA1(angle: elevationAngleDegrees, timestamp: Date.now)
     }
     //domhär funktionerna går säkert att slå ihop till en. alltså retrivesensordata och returnaccelerometerdatainternal
-    func retriveSensorData(xSample: Int16, ySample: Int16, zSample: Int16){
-        let filteredData: FilteredData = theModel.filterDataA1(xSample: xSample, ySample: ySample, zSample: zSample)
-        let elevationAngleDegrees = theModel.calculateAngle(filteredData)
-            print("Elevation angles degrees: \(elevationAngleDegrees)")
-            theModel.addMeassurement(angle: elevationAngleDegrees, timestamp: Date.now)
+    func retriveSensorAccData(xSample: Double, ySample: Double, zSample: Double){
+        let rawAngle = theModel.calculateAngleNew(xSample, ySample, zSample)
+        print("AccRawAngle: \(rawAngle)")
+        theModel.addRawAngleAcc(rawAngle)
+        theModel.filterDataA1New()
     }
+    
+    func retriveSensorGyroData(xSample: Double, ySample: Double, zSample: Double) {
+        let rawAngle = theModel.calculateAngleNew(xSample, ySample, zSample)
+        print("GyroRawAngle: \(rawAngle)")
+        theModel.addRawAngleGyro(rawAngle)
+        
+    }
+    
+    func filterBoth() {
+        let filteredAngle = theModel.filterDataA2New()
+        theModel.addMeassurementA2(angle: filteredAngle, timestamp: Date.now)
+    }
+    
+    
     
     func returnBothDataInternal(_ xGyro: Double,_ yGyro: Double,_ zGyro:Double, _ xAcc: Double,_ yAcc: Double,_ zAcc:Double) {
         //TODO: implement the second algorithm for both types of data
         let filteredData: FilteredData = theModel.filterDataA2(xGyro, yGyro, zGyro, xAcc, yAcc, zAcc)
         let elevationAngleDegrees = theModel.calculateAngle(filteredData)
         print("Elevation angles degrees: \(elevationAngleDegrees)")
-        theModel.addMeassurement(angle: elevationAngleDegrees, timestamp: Date.now)
+        theModel.addMeassurementA1(angle: elevationAngleDegrees, timestamp: Date.now)
     }
+    
+    func returnBothDataBluetooth(_ xGyro: Double,_ yGyro: Double,_ zGyro:Double, _ xAcc: Double,_ yAcc: Double,_ zAcc:Double) {
+        //TODO: implement the second algorithm for both types of data
+        let filteredData: FilteredData = theModel.filterDataA2(xGyro, yGyro, zGyro, xAcc, yAcc, zAcc)
+        let elevationAngleDegrees = theModel.calculateAngle(filteredData)
+        print("Elevation angles degrees: \(elevationAngleDegrees)")
+        theModel.addMeassurementA2(angle: elevationAngleDegrees, timestamp: Date.now)
+    }
+    
+    
 }

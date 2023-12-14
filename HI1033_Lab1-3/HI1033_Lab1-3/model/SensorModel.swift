@@ -14,9 +14,13 @@ struct SensorModel {
     private (set) var mode : SensorMode = SensorMode.INTERNAL
     private (set) var filteredDataArrayA1 : [FilteredData] = []
     private (set) var filteredDataArrayA2 : [FilteredData] = []
-    private (set) var alpha : Double = 1.5
+    private (set) var alpha : Double = 0.5
     private (set) var recordedDataA1 : [Measurement] = []
     private (set) var recordedDataA2 : [Measurement] = []
+    private (set) var rawAngleAccArray : [Double] = []
+    private (set) var rawAngleGyroArray : [Double] = []
+
+    
 
 
     
@@ -42,8 +46,22 @@ struct SensorModel {
         filteredDataArrayA2.append(sensorData)
     }
     
-    mutating func addMeassurement(angle: Double, timestamp: Date){
+    mutating func addMeassurementA1(angle: Double, timestamp: Date){
         recordedDataA1.append(Measurement(angle: angle, timestamp: timestamp))
+    }
+    
+    mutating func addMeassurementA2(angle: Double, timestamp: Date){
+        recordedDataA2.append(Measurement(angle: angle, timestamp: timestamp))
+    }
+    
+    
+    
+    mutating func addRawAngleAcc(_ rawAngleAcc: Double){
+        rawAngleAccArray.append(rawAngleAcc)
+    }    
+    
+    mutating func addRawAngleGyro(_ rawAngleGyro: Double){
+        rawAngleGyroArray.append(rawAngleGyro)
     }
     
     mutating func filterDataA1(xSample: Int16, ySample: Int16, zSample: Int16) -> FilteredData{
@@ -66,13 +84,46 @@ struct SensorModel {
         addFilteredDataA1(filteredData)
         return filteredData
     }
+    
+    
+    
+    mutating func filterDataA1New(){
+        var filteredAngle: Double = 0.0
+        
+        if rawAngleAccArray.count>1{
+            filteredAngle = filterAcceleration(currentInput: rawAngleAccArray[rawAngleAccArray.count-1], previousOutput: rawAngleAccArray[rawAngleAccArray.count-2])
+        }
+        
+        recordedDataA1.append(Measurement(angle: filteredAngle, timestamp: Date.now))
+    }
+    
+    func calculateAngleNew(_ x: Double, _ y: Double, _ z: Double) -> Double{
+        let magnitude = sqrt(x * x + y * y + z * z)
+        let cosElevationAngle = z / magnitude
+        let elevationAngleRadians = acos(cosElevationAngle)
+        let elevationAngleDegrees = elevationAngleRadians * (180.0 / .pi)
+        return elevationAngleDegrees
+    }
+    
+    
+    mutating func filterDataA2New() -> Double {
+        var filteredAngle = 0.0
+        if(rawAngleAccArray.count > 0 && rawAngleGyroArray.count > 0){
+            filteredAngle = filterGyroAndAccelerationNew(angleAcc: rawAngleAccArray.last!, angleGyro: rawAngleGyroArray.last!, alpha: alpha)
+   
+        }
+        return filteredAngle
+    }
+    
+    func filterGyroAndAccelerationNew(angleAcc: Double, angleGyro: Double, alpha: Double) -> Double {
+        return (alpha * angleAcc) + ((1 - alpha) * angleGyro)
+    }
+    
 
     mutating func filterDataA2(_ xGyro: Double,_ yGyro: Double,_ zGyro: Double,_ xAcc: Double,_ yAcc: Double,_ zAcc: Double) -> FilteredData {
         var filteredData = FilteredData(x: 0, y: 0, z: 0)
 
         if filteredDataArrayA2.count > 1 {
-            let lastFilteredData = filteredDataArrayA2.last!
-
             filteredData.x = filterGyroAndAcceleration(linearAcceleration: xAcc, gyroscope: xGyro, alpha: alpha)
             filteredData.y = filterGyroAndAcceleration(linearAcceleration: yAcc, gyroscope: yGyro, alpha: alpha)
             filteredData.z = filterGyroAndAcceleration(linearAcceleration: zAcc, gyroscope: zGyro, alpha: alpha)

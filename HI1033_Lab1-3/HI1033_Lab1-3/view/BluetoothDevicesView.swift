@@ -29,8 +29,12 @@ struct BluetoothDevicesView: View {
                 }
             }
             HStack{
-                Text(String(theViewModel.recordedData.last?.angle ?? 0.0))
+                Text(String(format: "%.2f", theViewModel.recordedDataA1.last?.angle ?? 0.0))
                     .font(.title)
+                Spacer()
+                Text(String(format: "%.2f", theViewModel.recordedDataA2.last?.angle ?? 0.0))
+                    .font(.title)
+                
             }
             Spacer()
         }
