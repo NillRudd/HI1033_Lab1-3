@@ -10,8 +10,8 @@ import CoreMotion
 
 
 protocol InternalConnectDelegate: AnyObject {
-    func returnAccelerometerData(_ x: Double,_ y: Double,_ z:Double)
-    func returnGyroData(_ x: Double,_ y: Double,_ z:Double)
+    func returnAccelerometerDataInternal(_ x: Double,_ y: Double,_ z:Double)
+    func returnBothDataInternal(_ xGyro: Double,_ yGyro: Double,_ zGyro:Double, _ xAcc: Double,_ yAcc: Double,_ zAcc:Double)
 }
 
 class InternalConnect {
@@ -34,8 +34,7 @@ class InternalConnect {
             manager.startAccelerometerUpdates()
             manager.startGyroUpdates()
             timer = Timer.scheduledTimer(withTimeInterval: 0.1, repeats: true) { [weak self] _ in
-                self?.captureAccelerometerData()
-                self?.captureGyroData()
+                self?.captureBothData()
             }
         }else {
             manager.startAccelerometerUpdates()
@@ -52,20 +51,25 @@ class InternalConnect {
             let z = data.acceleration.z
             
             
-            delegate?.returnAccelerometerData(x, y, z)
+            delegate?.returnAccelerometerDataInternal(x, y, z)
             //print("Accelerometer Data: x=\(x), y=\(y), z=\(z)")
             
         }
     }
     
-    func captureGyroData() {
-        if let gyroData = self.manager.gyroData {
-            let x = gyroData.rotationRate.x
-            let y = gyroData.rotationRate.y
-            let z = gyroData.rotationRate.z
+    //captures gyro and accelerometer data
+    func captureBothData() {
+        if let gyroData = self.manager.gyroData, let accelerometerData = self.manager.accelerometerData {
+            let xGyro = gyroData.rotationRate.x
+            let yGyro = gyroData.rotationRate.y
+            let zGyro = gyroData.rotationRate.z
             
-            print("Gyro Data: x=\(x), y=\(y), z=\(z)")
-            delegate?.returnGyroData(x, y, z)
+            let xAcc = accelerometerData.acceleration.x
+            let yAcc = accelerometerData.acceleration.y
+            let zAcc = accelerometerData.acceleration.z
+            
+            print("Gyro Data: x=\(xGyro), y=\(yGyro), z=\(zGyro)")
+            delegate?.returnBothDataInternal(xGyro, yGyro, zGyro, xAcc, yAcc, zAcc)
         }
     }
 

@@ -14,12 +14,10 @@ struct BluetoothDevicesView: View {
         VStack{
             List {
                 ForEach(theViewModel.devices, id: \.self) { device in
-                    
                     Button {
                         theViewModel.periferalChoosen(device)
                         print("Device chosen: \(String(describing: device.name))")
                     }label: {
-                        
                         HStack {
                             Text(device.name ?? "")
                             Spacer()
@@ -28,16 +26,13 @@ struct BluetoothDevicesView: View {
                             }
                         }
                     }
-                    
                 }
             }
-            
             HStack{
                 Text(String(theViewModel.recordedData.last?.angle ?? 0.0))
                     .font(.title)
             }
             Spacer()
-            
         }
     }
 }

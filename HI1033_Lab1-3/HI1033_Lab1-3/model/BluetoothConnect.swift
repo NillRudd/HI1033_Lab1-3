@@ -185,8 +185,6 @@ class BluetoothConnect: NSObject, CBCentralManagerDelegate, CBPeripheralDelegate
             print("xDelta:\(xSample) yDelta:\(ySample) zDelta:\(zSample)")
             delegate?.retriveSensorData(xSample: xSample, ySample: ySample, zSample: zSample)
         }
-        
-        
     }
     
    
@@ -220,11 +218,6 @@ class BluetoothConnect: NSObject, CBCentralManagerDelegate, CBPeripheralDelegate
         })
     }
     
-    
-   
-    
-    
-    
     override init(){
         super.init()
     }
@@ -244,5 +237,4 @@ class BluetoothConnect: NSObject, CBCentralManagerDelegate, CBPeripheralDelegate
             centralManager.cancelPeripheralConnection(peripheralBLE)
         }
     }
-    
 }
