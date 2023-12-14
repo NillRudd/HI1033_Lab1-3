@@ -55,7 +55,7 @@ class SensorViewModel: ObservableObject, BluetoothConnectDelegate, InternalConne
         theModel.setMode(SensorMode.INTERNAL)
         timer10Internal()
         //TODO: true for both, false for accelerometer maybe change to enum?
-        IPHConnect.start(true)
+        IPHConnect.start(false)
     }
     
     func periferalChoosen(_ pheriferal : CBPeripheral){

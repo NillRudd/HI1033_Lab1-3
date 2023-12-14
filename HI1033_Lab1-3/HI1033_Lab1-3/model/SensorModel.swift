@@ -118,18 +118,14 @@ struct SensorModel {
         let csvWriter = CHCSVWriter(outputStream: output, encoding: String.Encoding.utf8.rawValue, delimiter: ",".utf16.first!)
         
         //Headers for the csv file
-        //csvWriter?.writeField("X-Value")
-        //csvWriter?.writeField("Y-Value")
-        //csvWriter?.writeField("Z-Value")
-        csvWriter?.writeField("Computed angle")
+        csvWriter?.writeField("Computed angle Algorithm 1")
+        //csvWriter?.writeField("Computed angle Algorithm 2")
         
         csvWriter?.finishLine()
         
         for index in 0..<recordedDataA1.count {
-            //csvWriter?.writeField(bluetoothFilteredDataArray[index].x)
-            //csvWriter?.writeField(bluetoothFilteredDataArray[index].y)
-            //csvWriter?.writeField(bluetoothFilteredDataArray[index].z)
             csvWriter?.writeField(recordedDataA1[index].angle)
+            //csvWriter?.writeField(recordedDataA2[index].angle)
             csvWriter?.finishLine()
         }
         
