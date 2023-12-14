@@ -22,6 +22,7 @@
 		85F81CCA2B286C2C0074EAFB /* InternalConnect.swift in Sources */ = {isa = PBXBuildFile; fileRef = 85F81CC92B286C2C0074EAFB /* InternalConnect.swift */; };
 		85F81CCC2B286C5F0074EAFB /* SensorDataProcessor.swift in Sources */ = {isa = PBXBuildFile; fileRef = 85F81CCB2B286C5F0074EAFB /* SensorDataProcessor.swift */; };
 		85F81CD22B29FD770074EAFB /* CHCSVParser.m in Sources */ = {isa = PBXBuildFile; fileRef = 85F81CD02B29FD770074EAFB /* CHCSVParser.m */; };
+		85F81CD42B2B201B0074EAFB /* GraphView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 85F81CD32B2B201B0074EAFB /* GraphView.swift */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXFileReference section */
@@ -44,6 +45,7 @@
 		85F81CCF2B29FD770074EAFB /* HI1033_Lab1-3-Bridging-Header.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = "HI1033_Lab1-3-Bridging-Header.h"; sourceTree = "<group>"; };
 		85F81CD02B29FD770074EAFB /* CHCSVParser.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = CHCSVParser.m; sourceTree = "<group>"; };
 		85F81CD12B29FD770074EAFB /* CHCSVParser.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = CHCSVParser.h; sourceTree = "<group>"; };
+		85F81CD32B2B201B0074EAFB /* GraphView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = GraphView.swift; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
@@ -118,6 +120,7 @@
 				85060C8D2B26FB9700B544AB /* SensorView.swift */,
 				5BC166AF2B2856F60038658E /* BluetoothDevicesView.swift */,
 				5BC166B12B2863CA0038658E /* InternalSensorView.swift */,
+				85F81CD32B2B201B0074EAFB /* GraphView.swift */,
 			);
 			path = view;
 			sourceTree = "<group>";
@@ -210,6 +213,7 @@
 				85060C7B2B26F61F00B544AB /* ContentView.swift in Sources */,
 				85060C902B26FBA900B544AB /* SensorViewModel.swift in Sources */,
 				85060C792B26F61F00B544AB /* HI1033_Lab1_3App.swift in Sources */,
+				85F81CD42B2B201B0074EAFB /* GraphView.swift in Sources */,
 				85F81CD22B29FD770074EAFB /* CHCSVParser.m in Sources */,
 				5BC166B22B2863CA0038658E /* InternalSensorView.swift in Sources */,
 				85060C852B26F62100B544AB /* HI1033_Lab1_3.xcdatamodeld in Sources */,

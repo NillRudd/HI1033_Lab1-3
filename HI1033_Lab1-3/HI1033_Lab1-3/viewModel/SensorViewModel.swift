@@ -18,18 +18,17 @@ class SensorViewModel: ObservableObject, BluetoothConnectDelegate, InternalConne
     private let IPHConnect = InternalConnect()
     @Published var devices: [CBPeripheral] = []
     private var timer: Timer?
-    
-    var DataArrayA1 : [FilteredData]{
-        theModel.filteredDataArrayA1
-    }
-    
-    var DataArrayA2 : [FilteredData]{
-        theModel.filteredDataArrayA2
-    }
-    
-    var recordedData : [Measurement]{
+    @Published var recordedDataA1 : [Measurement] = []
+    @Published var recordedDataA2 : [Measurement] = []
+    /*
+    var recordedDataA1 : [Measurement]{
         theModel.recordedDataA1
     }
+    
+    var recordedDataA2 : [Measurement]{
+        theModel.recordedDataA2
+    }
+     */
     
     var chosenBluetoothDevice : CBPeripheral?{
         theModel.chosenBluetoothDevice
@@ -52,10 +51,13 @@ class SensorViewModel: ObservableObject, BluetoothConnectDelegate, InternalConne
     }
     
     func internalButtonClicked() {
+        theModel.clearData()
+        recordedDataA1 = []
+        recordedDataA2 = []
         theModel.setMode(SensorMode.INTERNAL)
         timer10Internal()
         //TODO: true for both, false for accelerometer maybe change to enum?
-        IPHConnect.start(false)
+        IPHConnect.start()
     }
     
     func periferalChoosen(_ pheriferal : CBPeripheral){
@@ -92,25 +94,30 @@ class SensorViewModel: ObservableObject, BluetoothConnectDelegate, InternalConne
         devices.append(peripheral)
     }
     
+    /*
     func returnAccelerometerDataInternal(_ x: Double,_ y: Double,_ z:Double) {
         let filteredData: FilteredData = theModel.filterDataA1(xSample: Int16(x*1024), ySample: Int16(y*1024), zSample: Int16(z*1024))
         let elevationAngleDegrees = theModel.calculateAngle(filteredData)
         print("Elevation angles degrees: \(elevationAngleDegrees)")
         theModel.addMeassurement(angle: elevationAngleDegrees, timestamp: Date.now)
     }
-    //domhär funktionerna går säkert att slå ihop till en. alltså retrivesensordata och returnaccelerometerdatainternal
+     */
     func retriveSensorData(xSample: Int16, ySample: Int16, zSample: Int16){
         let filteredData: FilteredData = theModel.filterDataA1(xSample: xSample, ySample: ySample, zSample: zSample)
         let elevationAngleDegrees = theModel.calculateAngle(filteredData)
             print("Elevation angles degrees: \(elevationAngleDegrees)")
-            theModel.addMeassurement(angle: elevationAngleDegrees, timestamp: Date.now)
+        theModel.addMeassurementA1(elevationAngleDegrees, 0.0)
     }
     
-    func returnBothDataInternal(_ xGyro: Double,_ yGyro: Double,_ zGyro:Double, _ xAcc: Double,_ yAcc: Double,_ zAcc:Double) {
+    func returnBothDataInternal(_ xGyro: Double,_ yGyro: Double,_ zGyro:Double, _ xAcc: Double,_ yAcc: Double,_ zAcc:Double, _ timestamp: Double) {
         //TODO: implement the second algorithm for both types of data
-        let filteredData: FilteredData = theModel.filterDataA2(xGyro, yGyro, zGyro, xAcc, yAcc, zAcc)
-        let elevationAngleDegrees = theModel.calculateAngle(filteredData)
-        print("Elevation angles degrees: \(elevationAngleDegrees)")
-        theModel.addMeassurement(angle: elevationAngleDegrees, timestamp: Date.now)
+        let filteredDataA1: FilteredData = theModel.filterDataA1(xSample: Int16(xAcc*1024), ySample: Int16(yAcc*1024), zSample: Int16(zAcc*1024))
+        let filteredDataA2: FilteredData = theModel.filterDataA2(xGyro, yGyro, zGyro, xAcc, yAcc, zAcc)
+        let elevationAngleDegreesA1 = theModel.calculateAngle(filteredDataA1)
+        let elevationAngleDegreesA2 = theModel.calculateAngle(filteredDataA2)
+        theModel.addMeassurementA1(elevationAngleDegreesA1, timestamp)
+        theModel.addMeassurementA2(elevationAngleDegreesA2, timestamp)
+        recordedDataA1.append(Measurement(angle: elevationAngleDegreesA1, timestamp: timestamp))
+        recordedDataA2.append(Measurement(angle: elevationAngleDegreesA2, timestamp: timestamp))
     }
 }

@@ -6,15 +6,20 @@
 //
 
 import SwiftUI
+import Charts
 
 struct InternalSensorView: View {
+    @EnvironmentObject var theViewModel : SensorViewModel
+    
     var body: some View {
-        Text(/*@START_MENU_TOKEN@*/"Hello, World!"/*@END_MENU_TOKEN@*/)
+        GraphView(dataA1: theViewModel.recordedDataA1, dataA2: theViewModel.recordedDataA2)
+        Text("blue == algorithm 1")
+        Text("green == algorithm 2")
     }
 }
 
-/*
-#Preview {
-    InternalSensorView()
+struct InternalSensorView_Previews: PreviewProvider {
+    static var previews: some View {
+        InternalSensorView().environmentObject(SensorViewModel())
+    }
 }
-*/

@@ -17,14 +17,18 @@ struct SensorModel {
     private (set) var alpha : Double = 1.5
     private (set) var recordedDataA1 : [Measurement] = []
     private (set) var recordedDataA2 : [Measurement] = []
-
-
     
     
     init() {
         
     }
     
+    mutating func clearData() {
+        filteredDataArrayA1 = []
+        filteredDataArrayA2 = []
+        recordedDataA1 = []
+        recordedDataA2 = []
+    }
     
     mutating func setChosenDevice(_ pheriferal : CBPeripheral){
         chosenBluetoothDevice = pheriferal
@@ -42,8 +46,12 @@ struct SensorModel {
         filteredDataArrayA2.append(sensorData)
     }
     
-    mutating func addMeassurement(angle: Double, timestamp: Date){
+    mutating func addMeassurementA1(_ angle: Double,_ timestamp: Double){
         recordedDataA1.append(Measurement(angle: angle, timestamp: timestamp))
+    }
+    
+    mutating func addMeassurementA2(_ angle: Double,_ timestamp: Double){
+        recordedDataA2.append(Measurement(angle: angle, timestamp: timestamp))
     }
     
     mutating func filterDataA1(xSample: Int16, ySample: Int16, zSample: Int16) -> FilteredData{
@@ -70,18 +78,9 @@ struct SensorModel {
     mutating func filterDataA2(_ xGyro: Double,_ yGyro: Double,_ zGyro: Double,_ xAcc: Double,_ yAcc: Double,_ zAcc: Double) -> FilteredData {
         var filteredData = FilteredData(x: 0, y: 0, z: 0)
 
-        if filteredDataArrayA2.count > 1 {
-            let lastFilteredData = filteredDataArrayA2.last!
-
-            filteredData.x = filterGyroAndAcceleration(linearAcceleration: xAcc, gyroscope: xGyro, alpha: alpha)
-            filteredData.y = filterGyroAndAcceleration(linearAcceleration: yAcc, gyroscope: yGyro, alpha: alpha)
-            filteredData.z = filterGyroAndAcceleration(linearAcceleration: zAcc, gyroscope: zGyro, alpha: alpha)
-        } else {
-            // If there's no previous data, just use the current samples
-            filteredData.x = xAcc
-            filteredData.y = yAcc
-            filteredData.z = zAcc
-        }
+        filteredData.x = filterGyroAndAcceleration(linearAcceleration: xAcc, gyroscope: xGyro, alpha: alpha)
+        filteredData.y = filterGyroAndAcceleration(linearAcceleration: yAcc, gyroscope: yGyro, alpha: alpha)
+        filteredData.z = filterGyroAndAcceleration(linearAcceleration: zAcc, gyroscope: zGyro, alpha: alpha)
 
         addFilteredDataA2(filteredData)
         return filteredData
@@ -119,13 +118,15 @@ struct SensorModel {
         
         //Headers for the csv file
         csvWriter?.writeField("Computed angle Algorithm 1")
-        //csvWriter?.writeField("Computed angle Algorithm 2")
+        csvWriter?.writeField("Computed angle Algorithm 2")
+        csvWriter?.writeField("Timestamp")
         
         csvWriter?.finishLine()
         
         for index in 0..<recordedDataA1.count {
             csvWriter?.writeField(recordedDataA1[index].angle)
-            //csvWriter?.writeField(recordedDataA2[index].angle)
+            csvWriter?.writeField(recordedDataA2[index].angle)
+            csvWriter?.writeField(recordedDataA2[index].timestamp)
             csvWriter?.finishLine()
         }
         
@@ -145,9 +146,9 @@ struct SensorModel {
 
 struct Measurement {
     var angle: Double
-    var timestamp: Date
+    var timestamp: Double
             
-    init(angle: Double, timestamp: Date){
+    init(angle: Double, timestamp: Double){
         self.angle = angle
         self.timestamp = timestamp
     }
