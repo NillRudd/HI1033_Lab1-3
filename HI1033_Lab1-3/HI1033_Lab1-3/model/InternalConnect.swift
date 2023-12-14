@@ -68,7 +68,7 @@ class InternalConnect {
             let yAcc = accelerometerData.acceleration.y
             let zAcc = accelerometerData.acceleration.z
             
-            print("Gyro Data: x=\(xGyro), y=\(yGyro), z=\(zGyro)")
+            //print("Gyro Data: x=\(xGyro), y=\(yGyro), z=\(zGyro)")
             delegate?.returnBothDataInternal(xGyro, yGyro, zGyro, xAcc, yAcc, zAcc)
         }
     }

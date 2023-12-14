@@ -12,9 +12,11 @@ import CoreBluetooth
 struct SensorModel {
     private (set) var chosenBluetoothDevice : CBPeripheral?
     private (set) var mode : SensorMode = SensorMode.INTERNAL
-    private (set) var bluetoothFilteredDataArray : [FilteredData] = []
+    private (set) var filteredDataArrayA1 : [FilteredData] = []
+    private (set) var filteredDataArrayA2 : [FilteredData] = []
     private (set) var alpha : Double = 1.5
-    private (set) var recordedData : [Measurement] = []
+    private (set) var recordedDataA1 : [Measurement] = []
+    private (set) var recordedDataA2 : [Measurement] = []
 
 
     
@@ -32,21 +34,25 @@ struct SensorModel {
         self.mode = mode
     }
     
-    mutating func addBluetoothData(_ sensorData: FilteredData){
-        bluetoothFilteredDataArray.append(sensorData)
+    mutating func addFilteredDataA1(_ sensorData: FilteredData){
+        filteredDataArrayA1.append(sensorData)
+    }
+    
+    mutating func addFilteredDataA2(_ sensorData: FilteredData){
+        filteredDataArrayA2.append(sensorData)
     }
     
     mutating func addMeassurement(angle: Double, timestamp: Date){
-        recordedData.append(Measurement(angle: angle, timestamp: timestamp))
+        recordedDataA1.append(Measurement(angle: angle, timestamp: timestamp))
     }
     
     mutating func filterDataA1(xSample: Int16, ySample: Int16, zSample: Int16) -> FilteredData{
         var filteredData : FilteredData = FilteredData(x: 0, y: 0, z: 0)
 
-        if bluetoothFilteredDataArray.count>1{
-            filteredData.x = filterAcceleration(currentInput: Double(xSample), previousOutput: bluetoothFilteredDataArray.last!.x)
-            filteredData.y = filterAcceleration(currentInput: Double(ySample), previousOutput: bluetoothFilteredDataArray.last!.y)
-            filteredData.z = filterAcceleration(currentInput: Double(zSample), previousOutput: bluetoothFilteredDataArray.last!.z)
+        if filteredDataArrayA1.count>1{
+            filteredData.x = filterAcceleration(currentInput: Double(xSample), previousOutput: filteredDataArrayA1.last!.x)
+            filteredData.y = filterAcceleration(currentInput: Double(ySample), previousOutput: filteredDataArrayA1.last!.y)
+            filteredData.z = filterAcceleration(currentInput: Double(zSample), previousOutput: filteredDataArrayA1.last!.z)
             
             //theModel.alpha*Double(xSample) + (1 - theModel.alpha) * theModel.bluetoothDataArray.last
             
@@ -57,15 +63,15 @@ struct SensorModel {
         }
         //print("previous: \(String(describing: theModel.bluetoothFilteredDataArray.last))")
         //print("DATA: \( filteredData)")
-        addBluetoothData(filteredData)
+        addFilteredDataA1(filteredData)
         return filteredData
     }
 
     mutating func filterDataA2(_ xGyro: Double,_ yGyro: Double,_ zGyro: Double,_ xAcc: Double,_ yAcc: Double,_ zAcc: Double) -> FilteredData {
         var filteredData = FilteredData(x: 0, y: 0, z: 0)
 
-        if bluetoothFilteredDataArray.count > 1 {
-            let lastFilteredData = bluetoothFilteredDataArray.last!
+        if filteredDataArrayA2.count > 1 {
+            let lastFilteredData = filteredDataArrayA2.last!
 
             filteredData.x = filterGyroAndAcceleration(linearAcceleration: xAcc, gyroscope: xGyro, alpha: alpha)
             filteredData.y = filterGyroAndAcceleration(linearAcceleration: yAcc, gyroscope: yGyro, alpha: alpha)
@@ -77,7 +83,7 @@ struct SensorModel {
             filteredData.z = zAcc
         }
 
-        addBluetoothData(filteredData)
+        addFilteredDataA2(filteredData)
         return filteredData
     }
 
@@ -119,11 +125,11 @@ struct SensorModel {
         
         csvWriter?.finishLine()
         
-        for index in 0..<recordedData.count {
+        for index in 0..<recordedDataA1.count {
             //csvWriter?.writeField(bluetoothFilteredDataArray[index].x)
             //csvWriter?.writeField(bluetoothFilteredDataArray[index].y)
             //csvWriter?.writeField(bluetoothFilteredDataArray[index].z)
-            csvWriter?.writeField(recordedData[index].angle)
+            csvWriter?.writeField(recordedDataA1[index].angle)
             csvWriter?.finishLine()
         }
         

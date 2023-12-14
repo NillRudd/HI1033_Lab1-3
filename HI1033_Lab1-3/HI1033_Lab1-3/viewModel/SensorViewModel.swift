@@ -18,12 +18,17 @@ class SensorViewModel: ObservableObject, BluetoothConnectDelegate, InternalConne
     private let IPHConnect = InternalConnect()
     @Published var devices: [CBPeripheral] = []
     private var timer: Timer?
-    var bluetoothDataArray : [FilteredData]{
-        theModel.bluetoothFilteredDataArray
+    
+    var DataArrayA1 : [FilteredData]{
+        theModel.filteredDataArrayA1
+    }
+    
+    var DataArrayA2 : [FilteredData]{
+        theModel.filteredDataArrayA2
     }
     
     var recordedData : [Measurement]{
-        theModel.recordedData
+        theModel.recordedDataA1
     }
     
     var chosenBluetoothDevice : CBPeripheral?{
@@ -50,7 +55,7 @@ class SensorViewModel: ObservableObject, BluetoothConnectDelegate, InternalConne
         theModel.setMode(SensorMode.INTERNAL)
         timer10Internal()
         //TODO: true for both, false for accelerometer maybe change to enum?
-        IPHConnect.start(false)
+        IPHConnect.start(true)
     }
     
     func periferalChoosen(_ pheriferal : CBPeripheral){
