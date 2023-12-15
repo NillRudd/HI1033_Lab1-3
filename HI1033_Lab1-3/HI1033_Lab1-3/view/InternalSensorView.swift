@@ -13,6 +13,7 @@ struct InternalSensorView: View {
     
     var body: some View {
         GraphView(dataA1: theViewModel.recordedDataA1, dataA2: theViewModel.recordedDataA2)
+        
         Text("blue == algorithm 1")
         Text("green == algorithm 2")
     }

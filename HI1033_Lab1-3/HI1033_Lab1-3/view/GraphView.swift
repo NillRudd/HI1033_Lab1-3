@@ -44,14 +44,39 @@ struct GraphView: View {
     }
 
     var body: some View {
-        GeometryReader { geometry in
-            ZStack {
-                path(for: dataA1, in: geometry.frame(in: .local))
-                    .stroke(Color.blue, lineWidth: 2)
-                path(for: dataA2, in: geometry.frame(in: .local))
-                    .stroke(Color.green, lineWidth: 2)
+        ZStack{
+            VStack{
+                GeometryReader { geometry in
+                    ZStack {
+                        path(for: dataA1, in: geometry.frame(in: .local))
+                            .stroke(Color.blue, lineWidth: 2)
+                        path(for: dataA2, in: geometry.frame(in: .local))
+                            .stroke(Color.green, lineWidth: 2)
+                    }
+                }
+                
+            }.background(Color.white)
+            
+            VStack{
+                Spacer()
+                HStack{
+                    Spacer()
+                    VStack{
+                        HStack{
+                            Image(systemName:"circle.circle.fill").foregroundColor(/*@START_MENU_TOKEN@*/.blue/*@END_MENU_TOKEN@*/)
+                            Text("Algorithm 1")
+                        }
+                        
+                        HStack{
+                            Image(systemName:"circle.circle.fill").foregroundColor(.green)
+                            Text("Algorithm 2")
+                        }
+                        
+                    }
+                }
             }
         }
+                
     }
 }
 /*

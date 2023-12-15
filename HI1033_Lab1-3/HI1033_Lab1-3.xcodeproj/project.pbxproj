@@ -7,6 +7,10 @@
 	objects = {
 
 /* Begin PBXBuildFile section */
+		5B8F2F052B2C5C1500B2AEA6 /* MenuView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 5B8F2F042B2C5C1500B2AEA6 /* MenuView.swift */; };
+		5B8F2F072B2C64B500B2AEA6 /* DataPresentationView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 5B8F2F062B2C64B500B2AEA6 /* DataPresentationView.swift */; };
+		5B8F2F092B2C678B00B2AEA6 /* PlayView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 5B8F2F082B2C678B00B2AEA6 /* PlayView.swift */; };
+		5B8F2F0B2B2C702A00B2AEA6 /* StopView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 5B8F2F0A2B2C702A00B2AEA6 /* StopView.swift */; };
 		5BC166B02B2856F60038658E /* BluetoothDevicesView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 5BC166AF2B2856F60038658E /* BluetoothDevicesView.swift */; };
 		5BC166B22B2863CA0038658E /* InternalSensorView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 5BC166B12B2863CA0038658E /* InternalSensorView.swift */; };
 		85060C792B26F61F00B544AB /* HI1033_Lab1_3App.swift in Sources */ = {isa = PBXBuildFile; fileRef = 85060C782B26F61F00B544AB /* HI1033_Lab1_3App.swift */; };
@@ -26,6 +30,10 @@
 /* End PBXBuildFile section */
 
 /* Begin PBXFileReference section */
+		5B8F2F042B2C5C1500B2AEA6 /* MenuView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = MenuView.swift; sourceTree = "<group>"; };
+		5B8F2F062B2C64B500B2AEA6 /* DataPresentationView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = DataPresentationView.swift; sourceTree = "<group>"; };
+		5B8F2F082B2C678B00B2AEA6 /* PlayView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = PlayView.swift; sourceTree = "<group>"; };
+		5B8F2F0A2B2C702A00B2AEA6 /* StopView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = StopView.swift; sourceTree = "<group>"; };
 		5BC166AF2B2856F60038658E /* BluetoothDevicesView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = BluetoothDevicesView.swift; sourceTree = "<group>"; };
 		5BC166B12B2863CA0038658E /* InternalSensorView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = InternalSensorView.swift; sourceTree = "<group>"; };
 		85060C752B26F61F00B544AB /* HI1033_Lab1-3.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = "HI1033_Lab1-3.app"; sourceTree = BUILT_PRODUCTS_DIR; };
@@ -121,6 +129,10 @@
 				5BC166AF2B2856F60038658E /* BluetoothDevicesView.swift */,
 				5BC166B12B2863CA0038658E /* InternalSensorView.swift */,
 				85F81CD32B2B201B0074EAFB /* GraphView.swift */,
+				5B8F2F042B2C5C1500B2AEA6 /* MenuView.swift */,
+				5B8F2F062B2C64B500B2AEA6 /* DataPresentationView.swift */,
+				5B8F2F082B2C678B00B2AEA6 /* PlayView.swift */,
+				5B8F2F0A2B2C702A00B2AEA6 /* StopView.swift */,
 			);
 			path = view;
 			sourceTree = "<group>";
@@ -208,15 +220,19 @@
 				85060C822B26F62100B544AB /* Persistence.swift in Sources */,
 				85F81CCA2B286C2C0074EAFB /* InternalConnect.swift in Sources */,
 				85060C8C2B26FAA800B544AB /* BluetoothConnect.swift in Sources */,
+				5B8F2F092B2C678B00B2AEA6 /* PlayView.swift in Sources */,
 				5BC166B02B2856F60038658E /* BluetoothDevicesView.swift in Sources */,
 				85060C8E2B26FB9700B544AB /* SensorView.swift in Sources */,
+				5B8F2F072B2C64B500B2AEA6 /* DataPresentationView.swift in Sources */,
 				85060C7B2B26F61F00B544AB /* ContentView.swift in Sources */,
 				85060C902B26FBA900B544AB /* SensorViewModel.swift in Sources */,
 				85060C792B26F61F00B544AB /* HI1033_Lab1_3App.swift in Sources */,
 				85F81CD42B2B201B0074EAFB /* GraphView.swift in Sources */,
+				5B8F2F052B2C5C1500B2AEA6 /* MenuView.swift in Sources */,
 				85F81CD22B29FD770074EAFB /* CHCSVParser.m in Sources */,
 				5BC166B22B2863CA0038658E /* InternalSensorView.swift in Sources */,
 				85060C852B26F62100B544AB /* HI1033_Lab1_3.xcdatamodeld in Sources */,
+				5B8F2F0B2B2C702A00B2AEA6 /* StopView.swift in Sources */,
 				85060C952B26FC2200B544AB /* SensorModel.swift in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
@@ -347,7 +363,7 @@
 				CODE_SIGN_STYLE = Automatic;
 				CURRENT_PROJECT_VERSION = 1;
 				DEVELOPMENT_ASSET_PATHS = "\"HI1033_Lab1-3/Preview Content\"";
-				DEVELOPMENT_TEAM = MTP3D43XNX;
+				DEVELOPMENT_TEAM = 6XSZZM3G59;
 				ENABLE_PREVIEWS = YES;
 				GENERATE_INFOPLIST_FILE = YES;
 				INFOPLIST_FILE = "HI1033-Lab1-3-Info.plist";
@@ -365,7 +381,7 @@
 					"@executable_path/Frameworks",
 				);
 				MARKETING_VERSION = 1.0;
-				PRODUCT_BUNDLE_IDENTIFIER = "HI1033-Lab1-3";
+				PRODUCT_BUNDLE_IDENTIFIER = HI1033;
 				PRODUCT_NAME = "$(TARGET_NAME)";
 				SWIFT_EMIT_LOC_STRINGS = YES;
 				SWIFT_OBJC_BRIDGING_HEADER = "HI1033_Lab1-3-Bridging-Header.h";
@@ -384,7 +400,7 @@
 				CODE_SIGN_STYLE = Automatic;
 				CURRENT_PROJECT_VERSION = 1;
 				DEVELOPMENT_ASSET_PATHS = "\"HI1033_Lab1-3/Preview Content\"";
-				DEVELOPMENT_TEAM = MTP3D43XNX;
+				DEVELOPMENT_TEAM = 6XSZZM3G59;
 				ENABLE_PREVIEWS = YES;
 				GENERATE_INFOPLIST_FILE = YES;
 				INFOPLIST_FILE = "HI1033-Lab1-3-Info.plist";
@@ -402,7 +418,7 @@
 					"@executable_path/Frameworks",
 				);
 				MARKETING_VERSION = 1.0;
-				PRODUCT_BUNDLE_IDENTIFIER = "HI1033-Lab1-3";
+				PRODUCT_BUNDLE_IDENTIFIER = HI1033;
 				PRODUCT_NAME = "$(TARGET_NAME)";
 				SWIFT_EMIT_LOC_STRINGS = YES;
 				SWIFT_OBJC_BRIDGING_HEADER = "HI1033_Lab1-3-Bridging-Header.h";
@@ -474,7 +490,7 @@
 				CODE_SIGN_STYLE = Automatic;
 				CURRENT_PROJECT_VERSION = 1;
 				DEVELOPMENT_ASSET_PATHS = "\"HI1033_Lab1-3/Preview Content\"";
-				DEVELOPMENT_TEAM = MTP3D43XNX;
+				DEVELOPMENT_TEAM = 6XSZZM3G59;
 				ENABLE_PREVIEWS = YES;
 				GENERATE_INFOPLIST_FILE = YES;
 				INFOPLIST_FILE = "HI1033-Lab1-3-Info.plist";
@@ -492,7 +508,7 @@
 					"@executable_path/Frameworks",
 				);
 				MARKETING_VERSION = 1.0;
-				PRODUCT_BUNDLE_IDENTIFIER = "HI1033-Lab1-3";
+				PRODUCT_BUNDLE_IDENTIFIER = HI1033;
 				PRODUCT_NAME = "$(TARGET_NAME)";
 				SWIFT_EMIT_LOC_STRINGS = YES;
 				SWIFT_OBJC_BRIDGING_HEADER = "HI1033_Lab1-3-Bridging-Header.h";
