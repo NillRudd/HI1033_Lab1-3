@@ -25,8 +25,16 @@ struct DataPresentationView: View {
                 }
                 
                 GraphView(dataA1: theViewModel.recordedDataA1, dataA2: theViewModel.recordedDataA2)
-                Text("blue == algorithm 1")
-                Text("green == algorithm 2")
+                
+                HStack{
+                    Spacer()
+                    Text(String(format: "%.2f", theViewModel.recordedDataA1.last?.angle ?? 0.0)).font(Font.system(size: 50))
+                    Spacer()
+                    Text(String(format: "%.2f", theViewModel.recordedDataA2.last?.angle ?? 0.0)).font(Font.system(size: 50))
+                    Spacer()
+                }
+                    .padding()
+                
                 
                 
                 HStack {

@@ -56,13 +56,25 @@ struct GraphView: View {
                 }
                 
             }.background(Color.white)
-            HStack{
-                Image(systemName:"circle.circle.fill").foregroundColor(/*@START_MENU_TOKEN@*/.blue/*@END_MENU_TOKEN@*/)
-                Text("Algorithm 1")
+            
+            VStack{
+                Spacer()
+                HStack{
+                    Spacer()
+                    VStack{
+                        HStack{
+                            Image(systemName:"circle.circle.fill").foregroundColor(/*@START_MENU_TOKEN@*/.blue/*@END_MENU_TOKEN@*/)
+                            Text("Algorithm 1")
+                        }
+                        
+                        HStack{
+                            Image(systemName:"circle.circle.fill").foregroundColor(.green)
+                            Text("Algorithm 2")
+                        }
+                        
+                    }
+                }
             }
-            
-            Text("green == algorithm 2")
-            
         }
                 
     }
