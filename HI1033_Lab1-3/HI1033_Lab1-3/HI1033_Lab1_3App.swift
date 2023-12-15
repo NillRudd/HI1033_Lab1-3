@@ -13,7 +13,7 @@ struct HI1033_Lab1_3App: App {
 
     var body: some Scene {
         WindowGroup {
-            SensorView().environmentObject(SensorViewModel())
+            MenuView().environmentObject(SensorViewModel())
             //ContentView()
             //    .environment(\.managedObjectContext, persistenceController.container.viewContext)
         }

@@ -50,6 +50,14 @@ class SensorViewModel: ObservableObject, BluetoothConnectDelegate, InternalConne
         devices = []
     }
     
+    func setMode(mode: SensorMode){
+        theModel.setMode(mode)
+    }
+    
+    func stopInternalSensor(){
+        IPHConnect.stop()
+    }
+    
     func internalButtonClicked() {
         theModel.clearData()
         recordedDataA1 = []
