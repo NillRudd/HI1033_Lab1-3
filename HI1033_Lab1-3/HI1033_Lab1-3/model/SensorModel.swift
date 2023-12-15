@@ -18,7 +18,6 @@ struct SensorModel {
     private (set) var recordedDataA1 : [Measurement] = []
     private (set) var recordedDataA2 : [Measurement] = []
     
-    
     init() {
         
     }
@@ -46,44 +45,12 @@ struct SensorModel {
         filteredDataArrayA2.append(sensorData)
     }
     
-    mutating func addMeassurementA1(_ angle: Double,_ timestamp: Double){
+    mutating func addMeasurementA1(_ angle: Double,_ timestamp: Double){
         recordedDataA1.append(Measurement(angle: angle, timestamp: timestamp))
     }
     
-    mutating func addMeassurementA2(_ angle: Double,_ timestamp: Double){
+    mutating func addMeasurementA2(_ angle: Double,_ timestamp: Double){
         recordedDataA2.append(Measurement(angle: angle, timestamp: timestamp))
-    }
-    
-    mutating func filterDataA1(xSample: Int16, ySample: Int16, zSample: Int16) -> FilteredData{
-        var filteredData : FilteredData = FilteredData(x: 0, y: 0, z: 0)
-
-        if filteredDataArrayA1.count>1{
-            filteredData.x = filterAcceleration(currentInput: Double(xSample), previousOutput: filteredDataArrayA1.last!.x)
-            filteredData.y = filterAcceleration(currentInput: Double(ySample), previousOutput: filteredDataArrayA1.last!.y)
-            filteredData.z = filterAcceleration(currentInput: Double(zSample), previousOutput: filteredDataArrayA1.last!.z)
-            
-            //theModel.alpha*Double(xSample) + (1 - theModel.alpha) * theModel.bluetoothDataArray.last
-            
-        } else{
-            filteredData.x = Double(xSample)
-            filteredData.y = Double(ySample)
-            filteredData.z = Double(zSample)
-        }
-        //print("previous: \(String(describing: theModel.bluetoothFilteredDataArray.last))")
-        //print("DATA: \( filteredData)")
-        addFilteredDataA1(filteredData)
-        return filteredData
-    }
-
-    mutating func filterDataA2(_ xGyro: Double,_ yGyro: Double,_ zGyro: Double,_ xAcc: Double,_ yAcc: Double,_ zAcc: Double) -> FilteredData {
-        var filteredData = FilteredData(x: 0, y: 0, z: 0)
-
-        filteredData.x = filterGyroAndAcceleration(linearAcceleration: xAcc, gyroscope: xGyro, alpha: alpha)
-        filteredData.y = filterGyroAndAcceleration(linearAcceleration: yAcc, gyroscope: yGyro, alpha: alpha)
-        filteredData.z = filterGyroAndAcceleration(linearAcceleration: zAcc, gyroscope: zGyro, alpha: alpha)
-
-        addFilteredDataA2(filteredData)
-        return filteredData
     }
 
     func calculateAngle(_ filteredData: FilteredData) -> Double{
@@ -94,13 +61,17 @@ struct SensorModel {
         return elevationAngleDegrees
     }
     
-    func filterAcceleration(currentInput: Double, previousOutput: Double) -> Double{
+    func filterAcceleration(currentInput: Double) -> Double{
+        var previousOutput = 0.0
+        if !recordedDataA1.isEmpty {
+            previousOutput = recordedDataA1[recordedDataA1.count-1].angle
+        }
         return (alpha * currentInput) + (1 - alpha) * previousOutput
     }
     
-    func filterGyroAndAcceleration(linearAcceleration: Double, gyroscope: Double, alpha: Double) -> Double {
-        return (alpha * linearAcceleration) + ((1 - alpha) * gyroscope)
-    }
+    func filterGyroAndAcceleration(linearAcceleration: Double, gyroscope: Double) -> Double {
+            return (alpha * linearAcceleration) + ((1 - alpha) * gyroscope)
+        }
     
     //Now only gives the user  the calculated angle in the csv file
     //The file could be found in files app on your iphone,

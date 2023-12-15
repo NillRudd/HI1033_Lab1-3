@@ -111,21 +111,27 @@ class SensorViewModel: ObservableObject, BluetoothConnectDelegate, InternalConne
     }
      */
     func retriveSensorData(xSample: Int16, ySample: Int16, zSample: Int16){
-        let filteredData: FilteredData = theModel.filterDataA1(xSample: xSample, ySample: ySample, zSample: zSample)
-        let elevationAngleDegrees = theModel.calculateAngle(filteredData)
-            print("Elevation angles degrees: \(elevationAngleDegrees)")
-        theModel.addMeassurementA1(elevationAngleDegrees, 0.0)
+        let rawData = FilteredData(x: Double(xSample), y: Double(ySample), z: Double(zSample))
+        let elevationAngleDegreesAcc = theModel.calculateAngle(rawData)
+                
+        let filteredData = theModel.filterAcceleration(currentInput: elevationAngleDegreesAcc)
+                
+        theModel.addMeasurementA1(filteredData, 0.0)
+        recordedDataA1.append(Measurement(angle: filteredData, timestamp: 0.0))
     }
     
     func returnBothDataInternal(_ xGyro: Double,_ yGyro: Double,_ zGyro:Double, _ xAcc: Double,_ yAcc: Double,_ zAcc:Double, _ timestamp: Double) {
-        //TODO: implement the second algorithm for both types of data
-        let filteredDataA1: FilteredData = theModel.filterDataA1(xSample: Int16(xAcc*1024), ySample: Int16(yAcc*1024), zSample: Int16(zAcc*1024))
-        let filteredDataA2: FilteredData = theModel.filterDataA2(xGyro, yGyro, zGyro, xAcc, yAcc, zAcc)
-        let elevationAngleDegreesA1 = theModel.calculateAngle(filteredDataA1)
-        let elevationAngleDegreesA2 = theModel.calculateAngle(filteredDataA2)
-        theModel.addMeassurementA1(elevationAngleDegreesA1, timestamp)
-        theModel.addMeassurementA2(elevationAngleDegreesA2, timestamp)
-        recordedDataA1.append(Measurement(angle: elevationAngleDegreesA1, timestamp: timestamp))
-        recordedDataA2.append(Measurement(angle: elevationAngleDegreesA2, timestamp: timestamp))
+        let rawDataA1 = FilteredData(x: xAcc, y: yAcc, z: zAcc)
+        let rawDataA2 = FilteredData(x: xGyro, y: yGyro, z: zGyro)
+        let elevationAngleDegreesAcc = theModel.calculateAngle(rawDataA1)
+        let elevationAngleDegreesGyro = theModel.calculateAngle(rawDataA2)
+        
+        let filteredDataA1 = theModel.filterAcceleration(currentInput: elevationAngleDegreesAcc)
+        let filteredDataA2 = theModel.filterGyroAndAcceleration(linearAcceleration: elevationAngleDegreesAcc, gyroscope: elevationAngleDegreesGyro)
+        
+        theModel.addMeasurementA1(filteredDataA1, timestamp)
+        theModel.addMeasurementA2(filteredDataA2, timestamp)
+        recordedDataA1.append(Measurement(angle: filteredDataA1, timestamp: timestamp))
+        recordedDataA2.append(Measurement(angle: filteredDataA2, timestamp: timestamp))
     }
 }

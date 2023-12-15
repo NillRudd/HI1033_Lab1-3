@@ -14,7 +14,6 @@
 		5BC166B02B2856F60038658E /* BluetoothDevicesView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 5BC166AF2B2856F60038658E /* BluetoothDevicesView.swift */; };
 		5BC166B22B2863CA0038658E /* InternalSensorView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 5BC166B12B2863CA0038658E /* InternalSensorView.swift */; };
 		85060C792B26F61F00B544AB /* HI1033_Lab1_3App.swift in Sources */ = {isa = PBXBuildFile; fileRef = 85060C782B26F61F00B544AB /* HI1033_Lab1_3App.swift */; };
-		85060C7B2B26F61F00B544AB /* ContentView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 85060C7A2B26F61F00B544AB /* ContentView.swift */; };
 		85060C7D2B26F62100B544AB /* Assets.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = 85060C7C2B26F62100B544AB /* Assets.xcassets */; };
 		85060C802B26F62100B544AB /* Preview Assets.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = 85060C7F2B26F62100B544AB /* Preview Assets.xcassets */; };
 		85060C822B26F62100B544AB /* Persistence.swift in Sources */ = {isa = PBXBuildFile; fileRef = 85060C812B26F62100B544AB /* Persistence.swift */; };
@@ -38,7 +37,6 @@
 		5BC166B12B2863CA0038658E /* InternalSensorView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = InternalSensorView.swift; sourceTree = "<group>"; };
 		85060C752B26F61F00B544AB /* HI1033_Lab1-3.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = "HI1033_Lab1-3.app"; sourceTree = BUILT_PRODUCTS_DIR; };
 		85060C782B26F61F00B544AB /* HI1033_Lab1_3App.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = HI1033_Lab1_3App.swift; sourceTree = "<group>"; };
-		85060C7A2B26F61F00B544AB /* ContentView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ContentView.swift; sourceTree = "<group>"; };
 		85060C7C2B26F62100B544AB /* Assets.xcassets */ = {isa = PBXFileReference; lastKnownFileType = folder.assetcatalog; path = Assets.xcassets; sourceTree = "<group>"; };
 		85060C7F2B26F62100B544AB /* Preview Assets.xcassets */ = {isa = PBXFileReference; lastKnownFileType = folder.assetcatalog; path = "Preview Assets.xcassets"; sourceTree = "<group>"; };
 		85060C812B26F62100B544AB /* Persistence.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Persistence.swift; sourceTree = "<group>"; };
@@ -124,7 +122,6 @@
 		85060C922B26FBD500B544AB /* view */ = {
 			isa = PBXGroup;
 			children = (
-				85060C7A2B26F61F00B544AB /* ContentView.swift */,
 				85060C8D2B26FB9700B544AB /* SensorView.swift */,
 				5BC166AF2B2856F60038658E /* BluetoothDevicesView.swift */,
 				5BC166B12B2863CA0038658E /* InternalSensorView.swift */,
@@ -224,7 +221,6 @@
 				5BC166B02B2856F60038658E /* BluetoothDevicesView.swift in Sources */,
 				85060C8E2B26FB9700B544AB /* SensorView.swift in Sources */,
 				5B8F2F072B2C64B500B2AEA6 /* DataPresentationView.swift in Sources */,
-				85060C7B2B26F61F00B544AB /* ContentView.swift in Sources */,
 				85060C902B26FBA900B544AB /* SensorViewModel.swift in Sources */,
 				85060C792B26F61F00B544AB /* HI1033_Lab1_3App.swift in Sources */,
 				85F81CD42B2B201B0074EAFB /* GraphView.swift in Sources */,
@@ -363,7 +359,7 @@
 				CODE_SIGN_STYLE = Automatic;
 				CURRENT_PROJECT_VERSION = 1;
 				DEVELOPMENT_ASSET_PATHS = "\"HI1033_Lab1-3/Preview Content\"";
-				DEVELOPMENT_TEAM = 6XSZZM3G59;
+				DEVELOPMENT_TEAM = MTP3D43XNX;
 				ENABLE_PREVIEWS = YES;
 				GENERATE_INFOPLIST_FILE = YES;
 				INFOPLIST_FILE = "HI1033-Lab1-3-Info.plist";
@@ -381,7 +377,7 @@
 					"@executable_path/Frameworks",
 				);
 				MARKETING_VERSION = 1.0;
-				PRODUCT_BUNDLE_IDENTIFIER = HI1033;
+				PRODUCT_BUNDLE_IDENTIFIER = "HI1033-Lab1-3";
 				PRODUCT_NAME = "$(TARGET_NAME)";
 				SWIFT_EMIT_LOC_STRINGS = YES;
 				SWIFT_OBJC_BRIDGING_HEADER = "HI1033_Lab1-3-Bridging-Header.h";
@@ -400,7 +396,7 @@
 				CODE_SIGN_STYLE = Automatic;
 				CURRENT_PROJECT_VERSION = 1;
 				DEVELOPMENT_ASSET_PATHS = "\"HI1033_Lab1-3/Preview Content\"";
-				DEVELOPMENT_TEAM = 6XSZZM3G59;
+				DEVELOPMENT_TEAM = MTP3D43XNX;
 				ENABLE_PREVIEWS = YES;
 				GENERATE_INFOPLIST_FILE = YES;
 				INFOPLIST_FILE = "HI1033-Lab1-3-Info.plist";
@@ -418,7 +414,7 @@
 					"@executable_path/Frameworks",
 				);
 				MARKETING_VERSION = 1.0;
-				PRODUCT_BUNDLE_IDENTIFIER = HI1033;
+				PRODUCT_BUNDLE_IDENTIFIER = "HI1033-Lab1-3";
 				PRODUCT_NAME = "$(TARGET_NAME)";
 				SWIFT_EMIT_LOC_STRINGS = YES;
 				SWIFT_OBJC_BRIDGING_HEADER = "HI1033_Lab1-3-Bridging-Header.h";
@@ -490,7 +486,7 @@
 				CODE_SIGN_STYLE = Automatic;
 				CURRENT_PROJECT_VERSION = 1;
 				DEVELOPMENT_ASSET_PATHS = "\"HI1033_Lab1-3/Preview Content\"";
-				DEVELOPMENT_TEAM = 6XSZZM3G59;
+				DEVELOPMENT_TEAM = MTP3D43XNX;
 				ENABLE_PREVIEWS = YES;
 				GENERATE_INFOPLIST_FILE = YES;
 				INFOPLIST_FILE = "HI1033-Lab1-3-Info.plist";
@@ -508,7 +504,7 @@
 					"@executable_path/Frameworks",
 				);
 				MARKETING_VERSION = 1.0;
-				PRODUCT_BUNDLE_IDENTIFIER = HI1033;
+				PRODUCT_BUNDLE_IDENTIFIER = "HI1033-Lab1-3";
 				PRODUCT_NAME = "$(TARGET_NAME)";
 				SWIFT_EMIT_LOC_STRINGS = YES;
 				SWIFT_OBJC_BRIDGING_HEADER = "HI1033_Lab1-3-Bridging-Header.h";
