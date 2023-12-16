@@ -45,6 +45,9 @@ class SensorViewModel: ObservableObject, BluetoothConnectDelegate, InternalConne
     }
     
     func bluetoothButtonClicked() {
+        theModel.clearData()
+        recordedDataA1 = []
+        recordedDataA2 = []
         theModel.setMode(SensorMode.BLUETOOTH)
         BLEConnect.start()
         devices = []
