@@ -29,6 +29,13 @@ struct SensorModel {
         
     }
     
+    mutating func clearData() {
+        filteredDataArrayA1 = []
+        filteredDataArrayA2 = []
+        recordedDataA1 = []
+        recordedDataA2 = []
+    }
+    
     
     mutating func setChosenDevice(_ pheriferal : CBPeripheral){
         chosenBluetoothDevice = pheriferal
@@ -53,7 +60,6 @@ struct SensorModel {
     mutating func addMeassurementA2(angle: Double, timestamp: Date){
         recordedDataA2.append(Measurement(angle: angle, timestamp: timestamp))
     }
-    
     
     
     mutating func addRawAngleAcc(_ rawAngleAcc: Double){

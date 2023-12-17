@@ -105,40 +105,77 @@ class SensorViewModel: ObservableObject, BluetoothConnectDelegate, InternalConne
     //domhär funktionerna går säkert att slå ihop till en. alltså retrivesensordata och returnaccelerometerdatainternal
     func retriveSensorAccData(xSample: Double, ySample: Double, zSample: Double){
         let rawAngle = theModel.calculateAngleNew(xSample, ySample, zSample)
-        print("AccRawAngle: \(rawAngle)")
+        //print("AccRawAngle: \(rawAngle)")
         theModel.addRawAngleAcc(rawAngle)
         theModel.filterDataA1New()
     }
     
     func retriveSensorGyroData(xSample: Double, ySample: Double, zSample: Double) {
-        let rawAngle = theModel.calculateAngleNew(xSample, ySample, zSample)
-        print("GyroRawAngle: \(rawAngle)")
-        theModel.addRawAngleGyro(rawAngle)
+        let rawDeltaAngleX = xSample/52
+        let rawDeltaAngleY = ySample/52
+        let rawDeltaAngleZ = zSample/52
+        //print("rawDeltax: \(rawDeltaAngleX), rawDeltay: \(rawDeltaAngleY), rawDeltaz: \(rawDeltaAngleZ)")
+        DispatchQueue.main.async {
+            if self.recordedDataA2.count == 0{
+                print("PRIMERO")
+                
+                self.theModel.addMeassurementA2(angle: 0, timestamp: Date.now)
+            }
+            else{
+                self.theModel.addMeassurementA2(angle: self.recordedDataA2.last!.angle + ySample/52, timestamp: Date.now)
+                /*let integratedAngleX = rawDeltaAngleX + DataArrayA2.last!.x
+                 let integratedAngleY = rawDeltaAngleY + DataArrayA2.last!.y
+                 let integratedAngleZ = rawDeltaAngleZ + DataArrayA2.last!.z
+                 print("x: \(integratedAngleX), y: \(integratedAngleY), z: \(integratedAngleZ)")
+                 theModel.addFilteredDataA2(FilteredData(x: integratedAngleX, y: integratedAngleY, z: integratedAngleZ))
+                 
+                 */
+            }
+        }
+        //theModel.addMeassurementA2(angle: theModel.filteredDataArrayA2.last!.y, timestamp: Date.now)
+        //print("@\(DataArrayA2)")
+        //print(">\(recordedDataA2)")
+        
         
     }
     
     func filterBoth() {
-        let filteredAngle = theModel.filterDataA2New()
-        theModel.addMeassurementA2(angle: filteredAngle, timestamp: Date.now)
+        /*let filteredAngle = theModel.filterDataA2New()
+        theModel.addMeassurementA2(angle: filteredAngle, timestamp: Date.now)*/
     }
     
     
     
     func returnBothDataInternal(_ xGyro: Double,_ yGyro: Double,_ zGyro:Double, _ xAcc: Double,_ yAcc: Double,_ zAcc:Double) {
+        /*
         //TODO: implement the second algorithm for both types of data
         let filteredData: FilteredData = theModel.filterDataA2(xGyro, yGyro, zGyro, xAcc, yAcc, zAcc)
         let elevationAngleDegrees = theModel.calculateAngle(filteredData)
         print("Elevation angles degrees: \(elevationAngleDegrees)")
         theModel.addMeassurementA1(angle: elevationAngleDegrees, timestamp: Date.now)
+         */
     }
     
     func returnBothDataBluetooth(_ xGyro: Double,_ yGyro: Double,_ zGyro:Double, _ xAcc: Double,_ yAcc: Double,_ zAcc:Double) {
+        /*
         //TODO: implement the second algorithm for both types of data
         let filteredData: FilteredData = theModel.filterDataA2(xGyro, yGyro, zGyro, xAcc, yAcc, zAcc)
         let elevationAngleDegrees = theModel.calculateAngle(filteredData)
         print("Elevation angles degrees: \(elevationAngleDegrees)")
         theModel.addMeassurementA2(angle: elevationAngleDegrees, timestamp: Date.now)
+         */
     }
+    
+    func stopData(){
+        BLEConnect.stopData()
+        theModel.clearData()
+    }
+    
+    func startData(){
+        theModel.clearData()
+        BLEConnect.startData()
+    }
+    
     
     
 }

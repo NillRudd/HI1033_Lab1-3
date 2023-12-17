@@ -20,6 +20,7 @@
         var centralManager: CBCentralManager!
         var peripheralBLE: CBPeripheral!
         var bluetoothDevices : [CBPeripheral] = []
+        var commandCharacteristic: CBCharacteristic?
         
         let GATTService = CBUUID(string: "fb005c80-02e7-f387-1cad-8acd2d8df0c8")
         let GATTCommand = CBUUID(string: "fb005c81-02e7-f387-1cad-8acd2d8df0c8")
@@ -70,11 +71,14 @@
         
         func choosePeriferal(_ peripheral: CBPeripheral){
             print("Found Polar")
-            peripheralBLE = peripheral
-            peripheralBLE.delegate = self
-            centralManager.connect(peripheralBLE)
-            centralManager.stopScan()
-            bluetoothDevices = []
+            DispatchQueue.main.async {
+                
+                self.peripheralBLE = peripheral
+                self.peripheralBLE.delegate = self
+                self.centralManager.connect(self.peripheralBLE)
+                self.centralManager.stopScan()
+                self.bluetoothDevices = []
+            }
         }
         
         func centralManager(_ central: CBCentralManager, didConnect peripheral: CBPeripheral) {
@@ -101,30 +105,16 @@
                 }
                 if characteristic.uuid == GATTCommand{
                     print("Command")
-                    
-                    //let parameter:[UInt8]  = [0x02, 0x00, 0x00, 0x01, 0x82, 0x00, 0x01, 0x01, 0x0E, 0x00]
-                    
-                    let parameterAcc:[UInt8]  = [0x02, 0x02, 0x00, 0x01, 0x34, 0x00, 0x01, 0x01, 0x10, 0x00, 0x02, 0x01, 0x08, 0x00, 0x04, 0x01, 0x03]
-                    
-                    //let parameter:[UInt8]  = [0x02, 0x02]
-                    
-                    let dataAcc = NSData(bytes: parameterAcc, length: 17)
-                    
-                    // Gyroscope
-                    let parameterGyro:[UInt8]  = [0x02, 0x05, 0x00, 0x01, 0x34, 0x00, 0x01, 0x01, 0x10, 0x00, 0x02, 0x01, 0xD0, 0x07, 0x04, 0x01, 0x03]
-                    let dataGyro = NSData(bytes: parameterGyro, length: 17)
-
-                    // dela med 16.384
-                    // För att få grader per sekund (dps)
-            
-                    peripheral.writeValue(dataAcc as Data, for: characteristic, type: CBCharacteristicWriteType.withResponse)
-                    peripheral.writeValue(dataGyro as Data, for: characteristic, type: CBCharacteristicWriteType.withResponse)
+                    DispatchQueue.main.async {
+                        self.commandCharacteristic = characteristic
+                    }
                 }
             }
         }
         
         func peripheral(_ peripheral: CBPeripheral, didUpdateValueFor characteristic: CBCharacteristic,
                         error: Error?) {
+            DispatchQueue.main.async {
             print("New data")
             let data = characteristic.value
             var byteArray: [UInt8] = []
@@ -188,17 +178,21 @@
                 //print("\(measId)xDelta:\(Double(xSample)) yDelta:\(Double(ySample)) zDelta:\(Double(zSample))")
                 
                 
-                if(measId == 2){
-                    delegate?.retriveSensorAccData(xSample: Double(xSample), ySample: Double(ySample), zSample: Double(zSample))
+                    
+                    if(measId == 2){
+                        self.delegate?.retriveSensorAccData(xSample: Double(xSample), ySample: Double(ySample), zSample: Double(zSample))
+                    }
+                    
+                    else if(measId == 5){
+                        
+                        self.delegate?.retriveSensorGyroData(xSample: Double(xSample)/16.384, ySample: Double(ySample)/16.384, zSample: Double(zSample)/16.384)
+                        
+                        //print("\(measId)xDelta:\(Double(xSample)/16.384/52) yDelta:\(Double(ySample)/16.384/52) zDelta:\(Double(zSample)/16.384/52)")
+                        
+                    }
+                    
+                    //self.delegate?.filterBoth()
                 }
-                
-                else if(measId == 5){
-                    delegate?.retriveSensorGyroData(xSample: Double(xSample), ySample: Double(ySample), zSample: Double(zSample))
-
-                }
-                
-                delegate?.filterBoth()
-                
             }
         }
         
@@ -241,6 +235,50 @@
             print("centralManager")
             centralManager = CBCentralManager(delegate: self, queue: nil)
         }
+        
+        func startData(){
+            //let parameter:[UInt8]  = [0x02, 0x00, 0x00, 0x01, 0x82, 0x00, 0x01, 0x01, 0x0E, 0x00]
+            
+            let parameterAcc:[UInt8]  = [0x02, 0x02, 0x00, 0x01, 0x34, 0x00, 0x01, 0x01, 0x10, 0x00, 0x02, 0x01, 0x08, 0x00, 0x04, 0x01, 0x03]
+            
+            //let parameter:[UInt8]  = [0x02, 0x02]
+            
+            let dataAcc = NSData(bytes: parameterAcc, length: 17)
+            
+            // Gyroscope
+            let parameterGyro:[UInt8]  = [0x02, 0x05, 0x00, 0x01, 0x34, 0x00, 0x01, 0x01, 0x10, 0x00, 0x02, 0x01, 0xD0, 0x07, 0x04, 0x01, 0x03]
+            let dataGyro = NSData(bytes: parameterGyro, length: 17)
+
+            // dela med 16.384
+            // För att få grader per sekund (dps)
+            
+        DispatchQueue.main.async {
+                
+            if let commandCharacteristic = self.commandCharacteristic {
+                self.peripheralBLE.writeValue(dataAcc as Data, for: commandCharacteristic, type: CBCharacteristicWriteType.withResponse)
+                self.peripheralBLE.writeValue(dataGyro as Data, for: commandCharacteristic, type: CBCharacteristicWriteType.withResponse)
+            } else {
+                print("Error: commandCharacteristic is nil")
+            }
+                
+            }
+        }
+        
+        func stopData() {
+            let parameterAcc:[UInt8]  = [0x03, 0x02]
+            
+            let dataAcc = NSData(bytes: parameterAcc, length: 2)
+            
+            // Gyroscope
+            let parameterGyro:[UInt8]  = [0x03, 0x05]
+            let dataGyro = NSData(bytes: parameterGyro, length: 2)
+    
+            peripheralBLE.writeValue(dataAcc as Data, for: commandCharacteristic!, type: CBCharacteristicWriteType.withResponse)
+            peripheralBLE.writeValue(dataGyro as Data, for: commandCharacteristic!, type: CBCharacteristicWriteType.withResponse)
+            
+            
+        }
+        
         
         func stop() {
             /*

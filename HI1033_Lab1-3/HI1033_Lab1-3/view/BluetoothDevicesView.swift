@@ -28,6 +28,38 @@ struct BluetoothDevicesView: View {
                     }
                 }
             }
+            
+            HStack{
+                Button {
+                    theViewModel.startData()
+                    print("Data start")
+                }label: {
+                    HStack {
+                        Text("Start")
+                        }
+                }
+                
+                Button {
+                    theViewModel.stopData()
+                    print("Data stopped")
+                }label: {
+                    HStack {
+                        Text("Stop")
+                        }
+                }
+                
+                
+                
+                
+                }
+            
+            
+                
+                
+            }
+
+            
+            
             HStack{
                 Text(String(format: "%.2f", theViewModel.recordedDataA1.last?.angle ?? 0.0))
                     .font(.title)
@@ -39,7 +71,7 @@ struct BluetoothDevicesView: View {
             Spacer()
         }
     }
-}
+
 
 struct BluetoothDevicesView_Previews: PreviewProvider {
     static var previews: some View {
