@@ -14,7 +14,7 @@ struct SensorModel {
     private (set) var mode : SensorMode = SensorMode.INTERNAL
     private (set) var filteredDataArrayA1 : [FilteredData] = []
     private (set) var filteredDataArrayA2 : [FilteredData] = []
-    private (set) var alpha : Double = 1.5
+    private (set) var alpha : Double = 0.7
     private (set) var recordedDataA1 : [Measurement] = []
     private (set) var recordedDataA2 : [Measurement] = []
     
