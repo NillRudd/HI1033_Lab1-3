@@ -191,7 +191,7 @@
                         
                     }
                     
-                    //self.delegate?.filterBoth()
+                    self.delegate?.filterBoth()
                 }
             }
         }

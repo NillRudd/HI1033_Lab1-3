@@ -116,32 +116,22 @@ class SensorViewModel: ObservableObject, BluetoothConnectDelegate, InternalConne
         let rawDeltaAngleZ = zSample/52
         //print("rawDeltax: \(rawDeltaAngleX), rawDeltay: \(rawDeltaAngleY), rawDeltaz: \(rawDeltaAngleZ)")
         DispatchQueue.main.async {
-            if self.recordedDataA2.count == 0{
-                print("PRIMERO")
+            if self.theModel.rawAngleGyroArray.count == 0{
+                print("First")
                 
-                self.theModel.addMeassurementA2(angle: 0, timestamp: Date.now)
+                self.theModel.addRawAngleGyro(0)
             }
             else{
-                self.theModel.addMeassurementA2(angle: self.recordedDataA2.last!.angle + ySample/52, timestamp: Date.now)
-                /*let integratedAngleX = rawDeltaAngleX + DataArrayA2.last!.x
-                 let integratedAngleY = rawDeltaAngleY + DataArrayA2.last!.y
-                 let integratedAngleZ = rawDeltaAngleZ + DataArrayA2.last!.z
-                 print("x: \(integratedAngleX), y: \(integratedAngleY), z: \(integratedAngleZ)")
-                 theModel.addFilteredDataA2(FilteredData(x: integratedAngleX, y: integratedAngleY, z: integratedAngleZ))
-                 
-                 */
+                self.theModel.addRawAngleGyro(self.theModel.rawAngleGyroArray.last! + ySample/52)
             }
         }
-        //theModel.addMeassurementA2(angle: theModel.filteredDataArrayA2.last!.y, timestamp: Date.now)
-        //print("@\(DataArrayA2)")
-        //print(">\(recordedDataA2)")
-        
         
     }
     
     func filterBoth() {
-        /*let filteredAngle = theModel.filterDataA2New()
-        theModel.addMeassurementA2(angle: filteredAngle, timestamp: Date.now)*/
+        let filteredAngle = theModel.filterDataA2New()
+        print("test \(filteredAngle)")
+        theModel.addMeassurementA2(angle: filteredAngle, timestamp: Date.now)
     }
     
     
