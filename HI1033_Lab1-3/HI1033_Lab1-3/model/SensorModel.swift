@@ -14,9 +14,13 @@ struct SensorModel {
     private (set) var mode : SensorMode = SensorMode.INTERNAL
     private (set) var filteredDataArrayA1 : [FilteredData] = []
     private (set) var filteredDataArrayA2 : [FilteredData] = []
-    private (set) var alpha : Double = 1.5
+    private (set) var alpha : Double = 0.85
     private (set) var recordedDataA1 : [Measurement] = []
     private (set) var recordedDataA2 : [Measurement] = []
+    private (set) var rawAngleAccArray : [Double] = []
+    private (set) var rawAngleGyroArray : [Double] = []
+    private (set) var timestampBluetooth : Double = 0.0
+    
     
     init() {
         
@@ -27,6 +31,13 @@ struct SensorModel {
         filteredDataArrayA2 = []
         recordedDataA1 = []
         recordedDataA2 = []
+        rawAngleAccArray = []
+        rawAngleGyroArray = []
+        timestampBluetooth = 0.0
+    }
+    
+    mutating func setTimestampBluetooth(_ timestamp: Double){
+        timestampBluetooth = timestamp
     }
     
     mutating func setChosenDevice(_ pheriferal : CBPeripheral){
@@ -45,12 +56,20 @@ struct SensorModel {
         filteredDataArrayA2.append(sensorData)
     }
     
-    mutating func addMeasurementA1(_ angle: Double,_ timestamp: Double){
+    mutating func addMeasurementA1(_ angle: Double, _ timestamp: Double){
         recordedDataA1.append(Measurement(angle: angle, timestamp: timestamp))
     }
     
     mutating func addMeasurementA2(_ angle: Double,_ timestamp: Double){
         recordedDataA2.append(Measurement(angle: angle, timestamp: timestamp))
+    }
+    
+    mutating func addRawAngleAcc(_ rawAngleAcc: Double){
+        rawAngleAccArray.append(rawAngleAcc)
+    }
+
+    mutating func addRawAngleGyro(_ rawAngleGyro: Double){
+        rawAngleGyroArray.append(rawAngleGyro)
     }
 
     func calculateAngle(_ filteredData: FilteredData) -> Double{
@@ -69,9 +88,34 @@ struct SensorModel {
         return (alpha * currentInput) + (1 - alpha) * previousOutput
     }
     
-    func filterGyroAndAcceleration(linearAcceleration: Double, gyroscope: Double) -> Double {
+    func filterAcceleration(currentInput: Double, previousOutput: Double) -> Double{
+        return (alpha * currentInput) + (1 - alpha) * previousOutput
+    }
+    
+    func filterGyroAndAcceleration(_ linearAcceleration: Double, _ gyroscope: Double) -> Double {
             return (alpha * linearAcceleration) + ((1 - alpha) * gyroscope)
         }
+    
+    mutating func filterDataA1New() -> Double{
+        var filteredAngle: Double = 0.0
+
+        if rawAngleAccArray.count>1{
+            filteredAngle = filterAcceleration(currentInput: rawAngleAccArray[rawAngleAccArray.count-1], previousOutput: rawAngleAccArray[rawAngleAccArray.count-2])
+        }
+
+        return filteredAngle
+    }
+    
+    
+    mutating func filterDataA2New() -> Double {
+        var filteredAngle = 0.0
+        if(rawAngleAccArray.count > 0 && rawAngleGyroArray.count > 0){
+            filteredAngle = filterGyroAndAcceleration(rawAngleAccArray.last!, rawAngleGyroArray.last!)
+
+        }
+        return filteredAngle
+    }
+    
     
     //Now only gives the user  the calculated angle in the csv file
     //The file could be found in files app on your iphone,

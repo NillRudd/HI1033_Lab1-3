@@ -18,9 +18,10 @@ class SensorViewModel: ObservableObject, BluetoothConnectDelegate, InternalConne
     private let IPHConnect = InternalConnect()
     @Published var devices: [CBPeripheral] = []
     private var timer: Timer?
-    @Published var recordedDataA1 : [Measurement] = []
-    @Published var recordedDataA2 : [Measurement] = []
-    /*
+    private var timestampBluetooth : Double{
+        theModel.timestampBluetooth
+    }
+    
     var recordedDataA1 : [Measurement]{
         theModel.recordedDataA1
     }
@@ -28,7 +29,6 @@ class SensorViewModel: ObservableObject, BluetoothConnectDelegate, InternalConne
     var recordedDataA2 : [Measurement]{
         theModel.recordedDataA2
     }
-     */
     
     var chosenBluetoothDevice : CBPeripheral?{
         theModel.chosenBluetoothDevice
@@ -46,11 +46,10 @@ class SensorViewModel: ObservableObject, BluetoothConnectDelegate, InternalConne
     
     func bluetoothButtonClicked() {
         theModel.clearData()
-        recordedDataA1 = []
-        recordedDataA2 = []
         theModel.setMode(SensorMode.BLUETOOTH)
-        BLEConnect.start()
         devices = []
+        BLEConnect.start()
+        
     }
     
     func setMode(mode: SensorMode){
@@ -62,10 +61,6 @@ class SensorViewModel: ObservableObject, BluetoothConnectDelegate, InternalConne
     }
     
     func internalButtonClicked() {
-        theModel.clearData()
-        recordedDataA1 = []
-        recordedDataA2 = []
-        theModel.setMode(SensorMode.INTERNAL)
         timer10Internal()
         //TODO: true for both, false for accelerometer maybe change to enum?
         IPHConnect.start()
@@ -74,24 +69,23 @@ class SensorViewModel: ObservableObject, BluetoothConnectDelegate, InternalConne
     func periferalChoosen(_ pheriferal : CBPeripheral){
         BLEConnect.choosePeriferal(pheriferal)
         theModel.setChosenDevice(pheriferal)
-        timer10BLuetooth()
     }
     
     func timer10BLuetooth(){
-        timer = Timer.scheduledTimer(withTimeInterval: 10, repeats: false) { [weak self] _ in
+        timer = Timer.scheduledTimer(withTimeInterval: 15, repeats: false) { [weak self] _ in
             self?.cancelTimerBlueTooth()
         }
     }
     
     func timer10Internal(){
-        timer = Timer.scheduledTimer(withTimeInterval: 10, repeats: false) { [weak self] _ in
+        timer = Timer.scheduledTimer(withTimeInterval: 15, repeats: false) { [weak self] _ in
             self?.cancelTimerInternal()
         }
     }
     
     func cancelTimerBlueTooth() {
         self.timer?.invalidate()
-        self.BLEConnect.stop()
+        self.BLEConnect.stopData()
         self.theModel.generateCSVFile()
     }
     
@@ -106,22 +100,52 @@ class SensorViewModel: ObservableObject, BluetoothConnectDelegate, InternalConne
     }
     
     /*
-    func returnAccelerometerDataInternal(_ x: Double,_ y: Double,_ z:Double) {
-        let filteredData: FilteredData = theModel.filterDataA1(xSample: Int16(x*1024), ySample: Int16(y*1024), zSample: Int16(z*1024))
-        let elevationAngleDegrees = theModel.calculateAngle(filteredData)
-        print("Elevation angles degrees: \(elevationAngleDegrees)")
-        theModel.addMeassurement(angle: elevationAngleDegrees, timestamp: Date.now)
-    }
+     func returnAccelerometerDataInternal(_ x: Double,_ y: Double,_ z:Double) {
+     let filteredData: FilteredData = theModel.filterDataA1(xSample: Int16(x*1024), ySample: Int16(y*1024), zSample: Int16(z*1024))
+     let elevationAngleDegrees = theModel.calculateAngle(filteredData)
+     print("Elevation angles degrees: \(elevationAngleDegrees)")
+     theModel.addMeassurement(angle: elevationAngleDegrees, timestamp: Date.now)
+     }
      */
-    func retriveSensorData(xSample: Int16, ySample: Int16, zSample: Int16){
-        let rawData = FilteredData(x: Double(xSample), y: Double(ySample), z: Double(zSample))
-        let elevationAngleDegreesAcc = theModel.calculateAngle(rawData)
-                
-        let filteredData = theModel.filterAcceleration(currentInput: elevationAngleDegreesAcc)
-                
-        theModel.addMeasurementA1(filteredData, 0.0)
-        recordedDataA1.append(Measurement(angle: filteredData, timestamp: 0.0))
+    func retriveSensorAccData(xSample: Double, ySample: Double, zSample: Double){
+        let rawAngle = theModel.calculateAngle(FilteredData(x: xSample, y: ySample, z: zSample))
+        //print("AccRawAngle: \(rawAngle)")
+        theModel.addRawAngleAcc(rawAngle)
+
+        theModel.addMeasurementA1(theModel.filterDataA1New(), timestampBluetooth)
     }
+    
+    func retriveSensorGyroData(xSample: Double, ySample: Double, zSample: Double) {
+            DispatchQueue.main.async {
+                if self.theModel.rawAngleGyroArray.count == 0{
+                    print("First")
+
+                    self.theModel.addRawAngleGyro(0)
+                }
+                else{
+                    self.theModel.addRawAngleGyro(self.theModel.rawAngleGyroArray.last! + ySample/52)
+                }
+            }
+
+        }
+    
+    func filterBoth() {
+        let filteredAngle = theModel.filterDataA2New()
+        print("test \(filteredAngle)")
+        
+        if theModel.recordedDataA2.count == 0{
+            theModel.setTimestampBluetooth(0.0)
+        }
+        else{
+            theModel.setTimestampBluetooth(timestampBluetooth + 1/52)
+        }
+        if(theModel.recordedDataA2.count < theModel.recordedDataA1.count){
+            theModel.addMeasurementA2(filteredAngle, timestampBluetooth)
+        }
+        
+    }
+    
+    
     
     func returnBothDataInternal(_ xGyro: Double,_ yGyro: Double,_ zGyro:Double, _ xAcc: Double,_ yAcc: Double,_ zAcc:Double, _ timestamp: Double) {
         let rawDataA1 = FilteredData(x: xAcc, y: yAcc, z: zAcc)
@@ -130,11 +154,27 @@ class SensorViewModel: ObservableObject, BluetoothConnectDelegate, InternalConne
         let elevationAngleDegreesGyro = theModel.calculateAngle(rawDataA2)
         
         let filteredDataA1 = theModel.filterAcceleration(currentInput: elevationAngleDegreesAcc)
-        let filteredDataA2 = theModel.filterGyroAndAcceleration(linearAcceleration: elevationAngleDegreesAcc, gyroscope: elevationAngleDegreesGyro)
+        let filteredDataA2 = theModel.filterGyroAndAcceleration(elevationAngleDegreesAcc, elevationAngleDegreesGyro)
         
         theModel.addMeasurementA1(filteredDataA1, timestamp)
         theModel.addMeasurementA2(filteredDataA2, timestamp)
-        recordedDataA1.append(Measurement(angle: filteredDataA1, timestamp: timestamp))
-        recordedDataA2.append(Measurement(angle: filteredDataA2, timestamp: timestamp))
+        
     }
+    
+    func clearData(){
+        theModel.clearData()
+    }
+    
+    
+    func stopData(){
+        BLEConnect.stopData()
+    }
+
+    func startData(){
+        DispatchQueue.main.async {
+            self.theModel.clearData()
+            self.BLEConnect.startData(timer: self.timer10BLuetooth)
+        }
+    }
+    
 }

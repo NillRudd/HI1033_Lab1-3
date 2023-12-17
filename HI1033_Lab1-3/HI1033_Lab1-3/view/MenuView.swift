@@ -47,6 +47,7 @@ struct MenuView: View {
                     VStack{
                         NavigationLink(destination: DataPresentationView().onAppear{
                             theViewModel.setMode(mode: SensorMode.INTERNAL)
+                                theViewModel.clearData()
                         }
                         ){
                             Text("Internal Sensor").font(.title)
@@ -58,6 +59,7 @@ struct MenuView: View {
                         
                         NavigationLink(destination: DataPresentationView().onAppear{
                             theViewModel.setMode(mode: SensorMode.BLUETOOTH)
+                            theViewModel.clearData()
                         }
                         ){
                             Text("Bluetooth").font(.title)
