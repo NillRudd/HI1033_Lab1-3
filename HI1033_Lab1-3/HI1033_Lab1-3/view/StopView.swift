@@ -15,8 +15,9 @@ struct StopView: View {
             if theViewModel.mode == SensorMode.INTERNAL{
                 theViewModel.stopInternalSensor()
             }
-            else{
-
+            else if theViewModel.mode == SensorMode.BLUETOOTH{
+                theViewModel.stopData()
+                theViewModel.stopData()
             }
         }label:{
             ZStack{

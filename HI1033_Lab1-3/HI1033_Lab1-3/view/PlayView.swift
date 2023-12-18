@@ -15,8 +15,8 @@ struct PlayView: View {
             if theViewModel.mode == SensorMode.INTERNAL{
                 theViewModel.internalButtonClicked()
             }
-            else{
-
+            else if theViewModel.mode == SensorMode.BLUETOOTH{
+                theViewModel.startData()
             }
         }label:{
             ZStack{

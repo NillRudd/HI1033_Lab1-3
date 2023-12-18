@@ -13,6 +13,9 @@ struct BluetoothDevicesView: View {
     var body: some View {
         VStack{
             List {
+                if theViewModel.devices.count == 0{
+                    Text("No devices found nearby.")
+                }
                 ForEach(theViewModel.devices, id: \.self) { device in
                     Button {
                         theViewModel.periferalChoosen(device)
@@ -28,11 +31,6 @@ struct BluetoothDevicesView: View {
                     }
                 }
             }
-            HStack{
-                Text(String(theViewModel.recordedDataA1.last?.angle ?? 0.0))
-                    .font(.title)
-            }
-            Spacer()
         }
     }
 }

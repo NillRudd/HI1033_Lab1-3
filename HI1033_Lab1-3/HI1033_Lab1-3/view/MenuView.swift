@@ -23,7 +23,8 @@ struct MenuView: View {
                 Color(red: 134/255, green: 185/255, blue: 237/255) .edgesIgnoringSafeArea(.all)
                 
                 VStack{
-
+                    Spacer()
+                    
                     VStack(spacing: 1) {
                         Text("Engineerd by Niklas Roslund & Esteban Masaya")
                             .font(.subheadline)
@@ -43,24 +44,40 @@ struct MenuView: View {
                         .shadow(color: .blue, radius: 2, x: 1, y: 1)
                     Text("〽️").font(.system(size: 70))
                     Spacer()
-                    
-                    NavigationLink(destination: DataPresentationView().onAppear{
-                        theViewModel.setMode(mode: SensorMode.INTERNAL)
+                    VStack{
+                        NavigationLink(destination: DataPresentationView().onAppear{
+                            theViewModel.setMode(mode: SensorMode.INTERNAL)
+                                theViewModel.clearData()
                         }
-                    ){
-                        Text("Internal Sensor").font(.title)
+                        ){
+                            Text("Internal Sensor").font(.title)
+                        }
+                        .foregroundColor(Color(red: 66/255, green: 139/255, blue: 221/255))
+                        .padding(5)
+                        .background(.white)
+                        .cornerRadius(8)
+                        
+                        NavigationLink(destination: DataPresentationView().onAppear{
+                            theViewModel.setMode(mode: SensorMode.BLUETOOTH)
+                            theViewModel.clearData()
+                        }
+                        ){
+                            Text("Bluetooth").font(.title)
+                        }
+                        .foregroundColor(Color(red: 66/255, green: 139/255, blue: 221/255))
+                        .padding(5)
+                        .background(.white)
+                        .cornerRadius(8)
                     }
+                    .padding()
                     
-                    NavigationLink(destination: DataPresentationView()
-                    ){
-                        Text("Bluetooth").font(.title)
-                    }
+                    
                 }
-            }
-
+                
             }
         }
     }
+}
 
 
 
