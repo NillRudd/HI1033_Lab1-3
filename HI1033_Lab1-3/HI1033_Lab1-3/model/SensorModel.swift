@@ -21,7 +21,6 @@ struct SensorModel {
     private (set) var rawAngleGyroArray : [Double] = []
     private (set) var timestampBluetooth : Double = 0.0
     
-    
     init() {
         
     }
@@ -106,7 +105,6 @@ struct SensorModel {
         return filteredAngle
     }
     
-    
     mutating func filterDataA2New() -> Double {
         var filteredAngle = 0.0
         if(rawAngleAccArray.count > 0 && rawAngleGyroArray.count > 0){
@@ -115,7 +113,6 @@ struct SensorModel {
         }
         return filteredAngle
     }
-    
     
     //Now only gives the user  the calculated angle in the csv file
     //The file could be found in files app on your iphone,
@@ -180,7 +177,6 @@ struct FilteredData {
         self.z = z
     }
 }
-
 
 enum SensorMode {
     case INTERNAL

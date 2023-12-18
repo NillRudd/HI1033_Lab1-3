@@ -70,16 +70,11 @@ struct MenuView: View {
                         .cornerRadius(8)
                     }
                     .padding()
-                    
-                    
                 }
-                
             }
         }
     }
 }
-
-
 
 struct MenuView_Previews: PreviewProvider {
     static var previews: some View {

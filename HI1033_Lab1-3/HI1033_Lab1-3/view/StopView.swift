@@ -29,7 +29,6 @@ struct StopView: View {
         .imageScale(.large)
         .background(Color(red: 66/255, green: 139/255, blue: 221/255))
         .cornerRadius(200)
-
     }
 }
 

@@ -26,7 +26,6 @@ struct SensorView: View {
                     .onAppear{
                         theViewModel.internalButtonClicked()
                     }){
-
                             Text("Internal")
                 }
             }

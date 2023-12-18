@@ -182,13 +182,10 @@ class BluetoothConnect: NSObject, CBCentralManagerDelegate, CBPeripheralDelegate
                 self.delegate?.retriveSensorGyroData(xSample: Double(xSample)/16.384, ySample: Double(ySample)/16.384, zSample: Double(zSample)/16.384)
                 
                 //print("\(measId)xDelta:\(Double(xSample)/16.384/52) yDelta:\(Double(ySample)/16.384/52) zDelta:\(Double(zSample)/16.384/52)")
-                
             }
-            
             self.delegate?.filterBoth()
         }
     }
-    
     
     static func parseDeltaFrame(_ data: Data, channels: UInt16, bitWidth: UInt16, totalBitLength: UInt16) -> [[Int16]]{
         // convert array to bits
@@ -240,7 +237,6 @@ class BluetoothConnect: NSObject, CBCentralManagerDelegate, CBPeripheralDelegate
         }
     }
     
-    
     func startData(timer: () -> ()){
         //let parameter:[UInt8]  = [0x02, 0x00, 0x00, 0x01, 0x82, 0x00, 0x01, 0x01, 0x0E, 0x00]
 
@@ -282,12 +278,5 @@ class BluetoothConnect: NSObject, CBCentralManagerDelegate, CBPeripheralDelegate
 
         peripheralBLE.writeValue(dataAcc as Data, for: commandCharacteristic!, type: CBCharacteristicWriteType.withResponse)
         peripheralBLE.writeValue(dataGyro as Data, for: commandCharacteristic!, type: CBCharacteristicWriteType.withResponse)
-        
-
     }
-    
-    
-    
-    
-    
 }

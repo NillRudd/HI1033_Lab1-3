@@ -11,7 +11,6 @@ struct DataPresentationView: View {
     @EnvironmentObject var theViewModel : SensorViewModel
 
     var body: some View {
-
         
         ZStack {
             Color(red: 134/255, green: 185/255, blue: 237/255) .edgesIgnoringSafeArea(.all)
@@ -52,7 +51,6 @@ struct DataPresentationView: View {
                     }
                 }
                 
-                
                 HStack{
                     Spacer()
                     VStack{
@@ -66,27 +64,18 @@ struct DataPresentationView: View {
                         Text(String(format: "%.2f", theViewModel.recordedDataA2.last?.angle ?? 0.0)).font(Font.system(size: 45))
                     }
                     
-                    
-                    
                     Spacer()
                 }
-                    .padding()
-                
-                
+                .padding()
                 
                 HStack {
                     PlayView()
                     StopView()
                 }
-                
-                
-                
             }
         }
-        
     }
 }
-
 
 struct DataPresentationView_Previews: PreviewProvider {
     static var previews: some View {

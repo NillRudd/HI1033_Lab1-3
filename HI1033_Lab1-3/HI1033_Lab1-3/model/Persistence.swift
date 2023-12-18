@@ -52,7 +52,6 @@ struct PersistenceController {
                     measurementsA2.append(contentsOf: decodedMeasurementsA2)
                 }
             }
-
             return (measurementsA1, measurementsA2)
         } catch {
             let nsError = error as NSError

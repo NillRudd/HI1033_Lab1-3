@@ -18,6 +18,7 @@ class SensorViewModel: ObservableObject, BluetoothConnectDelegate, InternalConne
     private let IPHConnect = InternalConnect()
     @Published var devices: [CBPeripheral] = []
     private var timer: Timer?
+    
     private var timestampBluetooth : Double{
         theModel.timestampBluetooth
     }
@@ -49,7 +50,6 @@ class SensorViewModel: ObservableObject, BluetoothConnectDelegate, InternalConne
         theModel.setMode(SensorMode.BLUETOOTH)
         devices = []
         BLEConnect.start()
-        
     }
     
     func setMode(mode: SensorMode){
@@ -62,7 +62,6 @@ class SensorViewModel: ObservableObject, BluetoothConnectDelegate, InternalConne
     
     func internalButtonClicked() {
         timer10Internal()
-        //TODO: true for both, false for accelerometer maybe change to enum?
         IPHConnect.start()
     }
     
@@ -99,14 +98,6 @@ class SensorViewModel: ObservableObject, BluetoothConnectDelegate, InternalConne
         devices.append(peripheral)
     }
     
-    /*
-     func returnAccelerometerDataInternal(_ x: Double,_ y: Double,_ z:Double) {
-     let filteredData: FilteredData = theModel.filterDataA1(xSample: Int16(x*1024), ySample: Int16(y*1024), zSample: Int16(z*1024))
-     let elevationAngleDegrees = theModel.calculateAngle(filteredData)
-     print("Elevation angles degrees: \(elevationAngleDegrees)")
-     theModel.addMeassurement(angle: elevationAngleDegrees, timestamp: Date.now)
-     }
-     */
     func retriveSensorAccData(xSample: Double, ySample: Double, zSample: Double){
         let rawAngle = theModel.calculateAngle(FilteredData(x: xSample, y: ySample, z: zSample))
         //print("AccRawAngle: \(rawAngle)")
@@ -116,18 +107,17 @@ class SensorViewModel: ObservableObject, BluetoothConnectDelegate, InternalConne
     }
     
     func retriveSensorGyroData(xSample: Double, ySample: Double, zSample: Double) {
-            DispatchQueue.main.async {
-                if self.theModel.rawAngleGyroArray.count == 0{
-                    print("First")
+        DispatchQueue.main.async {
+            if self.theModel.rawAngleGyroArray.count == 0{
+                print("First")
 
-                    self.theModel.addRawAngleGyro(0)
-                }
-                else{
-                    self.theModel.addRawAngleGyro(self.theModel.rawAngleGyroArray.last! + ySample/52)
-                }
+                self.theModel.addRawAngleGyro(0)
             }
-
+            else{
+                self.theModel.addRawAngleGyro(self.theModel.rawAngleGyroArray.last! + ySample/52)
+            }
         }
+    }
     
     func filterBoth() {
         let filteredAngle = theModel.filterDataA2New()
@@ -142,10 +132,7 @@ class SensorViewModel: ObservableObject, BluetoothConnectDelegate, InternalConne
         if(theModel.recordedDataA2.count < theModel.recordedDataA1.count){
             theModel.addMeasurementA2(filteredAngle, timestampBluetooth)
         }
-        
     }
-    
-    
     
     func returnBothDataInternal(_ xGyro: Double,_ yGyro: Double,_ zGyro:Double, _ xAcc: Double,_ yAcc: Double,_ zAcc:Double, _ timestamp: Double) {
         let rawDataA1 = FilteredData(x: xAcc, y: yAcc, z: zAcc)
@@ -158,13 +145,11 @@ class SensorViewModel: ObservableObject, BluetoothConnectDelegate, InternalConne
         
         theModel.addMeasurementA1(filteredDataA1, timestamp)
         theModel.addMeasurementA2(filteredDataA2, timestamp)
-        
     }
     
     func clearData(){
         theModel.clearData()
     }
-    
     
     func stopData(){
         BLEConnect.stopData()
@@ -176,5 +161,4 @@ class SensorViewModel: ObservableObject, BluetoothConnectDelegate, InternalConne
             self.BLEConnect.startData(timer: self.timer10BLuetooth)
         }
     }
-    
 }
