@@ -115,11 +115,11 @@ struct SensorModel {
     }
 }
 
-struct Measurement {
+struct Measurement: Codable {
     var angle: Double
     var timestamp: Double
             
-    init(angle: Double, timestamp: Double){
+    init(angle: Double, timestamp: Double) {
         self.angle = angle
         self.timestamp = timestamp
     }
